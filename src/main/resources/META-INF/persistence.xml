@@ -5,18 +5,12 @@
     <class>com.equipo1.entities.Book</class>
     <class>com.equipo1.entities.Department</class>
     <class>com.equipo1.entities.Schedule</class>
-    <class>com.equipo1.entities.LabMaterial</class>
     <class>com.equipo1.entities.Horary</class>
     <class>com.equipo1.entities.Enrollment</class>
     <class>com.equipo1.entities.Professor</class>
     <class>com.equipo1.entities.Classroom</class>
-    <class>com.equipo1.entities.AcademicGroup</class>
-    <class>com.equipo1.entities.LoanMaterial</class>
     <class>com.equipo1.entities.Subject</class>
-    <class>com.equipo1.entities.AccessSchool</class>
-    <class>com.equipo1.entities.LoanBook</class>
     <class>com.equipo1.entities.Attendance</class>
-    <class>com.equipo1.entities.SystemUser</class>
     <class>com.equipo1.entities.Student</class>
     <class>com.equipo1.entities.Academic_Group</class>
     <class>com.equipo1.entities.Loan_material</class>

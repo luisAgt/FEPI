@@ -12,7 +12,7 @@ import  com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 
-public class Sport_comunication {
+public class Sport_comm {
         
     public static void main(String []  args){
          SerialPort port = SerialPort.getCommPort("COM7");

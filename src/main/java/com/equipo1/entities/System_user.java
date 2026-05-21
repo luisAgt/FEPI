@@ -5,10 +5,8 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -35,9 +31,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "System_user.findByPaternalSurname", query = "SELECT s FROM System_user s WHERE s.paternalSurname = :paternalSurname"),
     @NamedQuery(name = "System_user.findByMaternalSurname", query = "SELECT s FROM System_user s WHERE s.maternalSurname = :maternalSurname"),
     @NamedQuery(name = "System_user.findByBirthdate", query = "SELECT s FROM System_user s WHERE s.birthdate = :birthdate"),
-    @NamedQuery(name = "System_user.findByEmail", query = "SELECT s FROM System_user s WHERE s.email = :email"),
+    @NamedQuery(name = "System_user.findByUsername", query = "SELECT s FROM System_user s WHERE s.username = :username"),
     @NamedQuery(name = "System_user.findByPassword", query = "SELECT s FROM System_user s WHERE s.password = :password"),
-    @NamedQuery(name = "System_user.findByRole", query = "SELECT s FROM System_user s WHERE s.role = :role")})
+    @NamedQuery(name = "System_user.findByRole", query = "SELECT s FROM System_user s WHERE s.role = :role"),
+    @NamedQuery(name = "System_user.findByEmail", query = "SELECT s FROM System_user s WHERE s.email = :email")})
 public class System_user implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,11 +61,8 @@ public class System_user implements Serializable {
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    private String email;
+    @Size(max = 255)
+    private String username;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -77,16 +71,9 @@ public class System_user implements Serializable {
     @NotNull
     @Size(min = 1, max = 45)
     private String role;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "systemuser")
-    private Professor professor;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "systemuser")
-    private Student student;
-    @OneToMany(mappedBy = "idUser")
-    private Collection<Loan_material> loanmaterialCollection;
-    @OneToMany(mappedBy = "idUser")
-    private Collection<Loan_book> loanbookCollection;
-    @OneToMany(mappedBy = "idUser")
-    private Collection<Access_school> accessschoolCollection;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 255)
+    private String email;
 
     public System_user() {
     }
@@ -95,13 +82,12 @@ public class System_user implements Serializable {
         this.idUser = idUser;
     }
 
-    public System_user(Integer idUser, String names, String paternalSurname, String maternalSurname, Date birthdate, String email, String password, String role) {
+    public System_user(Integer idUser, String names, String paternalSurname, String maternalSurname, Date birthdate, String password, String role) {
         this.idUser = idUser;
         this.names = names;
         this.paternalSurname = paternalSurname;
         this.maternalSurname = maternalSurname;
         this.birthdate = birthdate;
-        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -146,12 +132,12 @@ public class System_user implements Serializable {
         this.birthdate = birthdate;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -170,44 +156,12 @@ public class System_user implements Serializable {
         this.role = role;
     }
 
-    public Professor getProfessor() {
-        return professor;
+    public String getEmail() {
+        return email;
     }
 
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Collection<Loan_material> getLoanmaterialCollection() {
-        return loanmaterialCollection;
-    }
-
-    public void setLoanmaterialCollection(Collection<Loan_material> loanmaterialCollection) {
-        this.loanmaterialCollection = loanmaterialCollection;
-    }
-
-    public Collection<Loan_book> getLoanbookCollection() {
-        return loanbookCollection;
-    }
-
-    public void setLoanbookCollection(Collection<Loan_book> loanbookCollection) {
-        this.loanbookCollection = loanbookCollection;
-    }
-
-    public Collection<Access_school> getAccessschoolCollection() {
-        return accessschoolCollection;
-    }
-
-    public void setAccessschoolCollection(Collection<Access_school> accessschoolCollection) {
-        this.accessschoolCollection = accessschoolCollection;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

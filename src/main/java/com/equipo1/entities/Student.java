@@ -5,7 +5,6 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,7 +27,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s"),
     @NamedQuery(name = "Student.findByIdStudent", query = "SELECT s FROM Student s WHERE s.idStudent = :idStudent"),
     @NamedQuery(name = "Student.findByCarrer", query = "SELECT s FROM Student s WHERE s.carrer = :carrer"),
-    @NamedQuery(name = "Student.findByBoletaSt", query = "SELECT s FROM Student s WHERE s.boletaSt = :boletaSt")})
+    @NamedQuery(name = "Student.findByBoletaSt", query = "SELECT s FROM Student s WHERE s.boletaSt = :boletaSt"),
+    @NamedQuery(name = "Student.findByStatus", query = "SELECT s FROM Student s WHERE s.status = :status")})
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,13 +46,13 @@ public class Student implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "boleta_st")
     private String boletaSt;
-    @OneToMany(mappedBy = "idStudent")
-    private Collection<Attendance> attendanceCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    private String status;
     @JoinColumn(name = "id_student", referencedColumnName = "id_user", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private System_user systemuser;
-    @OneToMany(mappedBy = "idStudent")
-    private Collection<Enrollment> enrollmentCollection;
 
     public Student() {
     }
@@ -62,10 +61,11 @@ public class Student implements Serializable {
         this.idStudent = idStudent;
     }
 
-    public Student(Integer idStudent, String carrer, String boletaSt) {
+    public Student(Integer idStudent, String carrer, String boletaSt, String status) {
         this.idStudent = idStudent;
         this.carrer = carrer;
         this.boletaSt = boletaSt;
+        this.status = status;
     }
 
     public Integer getIdStudent() {
@@ -92,12 +92,12 @@ public class Student implements Serializable {
         this.boletaSt = boletaSt;
     }
 
-    public Collection<Attendance> getAttendanceCollection() {
-        return attendanceCollection;
+    public String getStatus() {
+        return status;
     }
 
-    public void setAttendanceCollection(Collection<Attendance> attendanceCollection) {
-        this.attendanceCollection = attendanceCollection;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public System_user getSystemuser() {
@@ -106,14 +106,6 @@ public class Student implements Serializable {
 
     public void setSystemuser(System_user systemuser) {
         this.systemuser = systemuser;
-    }
-
-    public Collection<Enrollment> getEnrollmentCollection() {
-        return enrollmentCollection;
-    }
-
-    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection;
     }
 
     @Override
