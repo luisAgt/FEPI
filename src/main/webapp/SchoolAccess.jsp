@@ -13,18 +13,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title name=" school_access">School Access</title>
 </head>
-<body>
+<body >
     <div>
         <form action="SvSchoolAccess">
-            <input type="text" name="student_status" placeholder="Estatus" disabled><br><br>
-            <input type="text" name="student_name" placeholder="Nombre" disabled> <br><br>
-            <input type="text" name="student_last_name" placeholder="Apellido Paterno" disabled><br><br>
-            <input type="text" name="student_mother_last_name" placeholder="Apellido Materno" disabled><br><br>
-            <input type="date" name="student_birthdate" placeholder="Fecha de Nacimiento" disabled><br><br>
-            <input type="text" name="student_id" placeholder="Boleta" disabled><br><br>
-            <input type="text" name="student_career" placeholder="Carrera" disabled><br><br>
-            <input type="text" name="student_email" placeholder="Correo" disabled><br><br>
-            <input type="text" name="school_status" placeholder="Tipo de acceso" disabled><br><br>
+            <input type="text" name="status" placeholder="Estatus" readonly><br><br>
+            <input type="text" name="name" placeholder="Nombre" readonly autofocus> <br><br>
+            <input type="text" name="last_name" placeholder="Apellido Paterno" readonly autofocus><br><br>
+            <input type="text" name="mother_last_name" placeholder="Apellido Materno" readonly autofocus><br><br>
+            <input type="date" name="birthdate" placeholder="Fecha de Nacimiento" readonly autofocus><br><br>
+            <input type="text" name="user_id" placeholder="Identificador" readonly autofocus><br><br>
+            <input type="text" name="carrer" placeholder="Carrera" readonly autofocus><br><br>
+            <input type="text" name="email" placeholder="Correo" readonly autofocus><br><br>
+            <input type="text" name="status" placeholder="Tipo de acceso" readonly><br><br>
         </form>
     </div>
 </body>

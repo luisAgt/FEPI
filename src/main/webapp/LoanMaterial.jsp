@@ -4,6 +4,8 @@
     Author     : XPxTBxLLX
 --%>
 
+<%@page import="com.equipo1.entities.Lab_material"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,14 +17,25 @@
 <body>
     <form action="SvLoanMaterial" method="POST">
         <div>
-            <input type="text" name="student_name" placeholder="Nombre Completo" disabled><br><br>
-            <input type="text" name="student_boleta" placeholder="Boleta" disabled><br><br>
-            <input type="text" name="correo" placeholder="Correo Electrónico"><br><br>
+            <input type="text"  placeholder="Nombre Completo" readonly autofocus><br><br>
+            <input type="text" placeholder="Boleta" readonly autofocus id="qrInput"><br><br>
+            <input type="text" name="id_user" placeholder="Identificador" readonly autofocus><br><br>
         </div>
         <div>
-            <input type="text" name="status" placeholder="Estatus" disabled><br><br>
-            <input type="text" name="date_loan" placeholder="Fecha de emision" disabled><br><br>
+            <input type="text" name="status" placeholder="Estatus" ><br><br>
+            <input type="text" name="date_loan" placeholder="Fecha de emision" readonly><br><br>
             <input type="date" name="date_return" placeholder="Fecha de devolución"><br><br>
+            <select name = "id_book">
+                <%
+                    List<Lab_material> materials = (List<Lab_material>) request.getAttribute("books");
+                    
+                    for (Lab_material b : materials){
+                %>
+                <<option value="<%= b.getIdLabMaterial()%>">
+                    <%= b.getMaterialName() %>
+                </option>
+                <% } %>
+            </select>
         </div>
         <div>
             <input type ="submit" value="Enviar">

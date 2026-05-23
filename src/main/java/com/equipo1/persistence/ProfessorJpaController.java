@@ -101,4 +101,3 @@ public class ProfessorJpaController {    // Cambia Professor por el nombre real
         }
     }
 }
-

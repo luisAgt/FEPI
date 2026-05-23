@@ -4,8 +4,13 @@
  */
 package com.equipo.servlets;
 
+import com.equipo1.entities.Controller;
+import com.equipo1.entities.Lab_material;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +62,13 @@ public class SvLoanMaterial extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        Controller controller = new Controller();
+        
+        List<Lab_material> materials = controller.getAvailableMaterials();
+        request.setAttribute("materials", materials);        
+        request.getRequestDispatcher("LoanMaterial.jsp").forward(request, response);
     }
 
     /**
@@ -71,7 +82,29 @@ public class SvLoanMaterial extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        try{
+            int idMaterial = Integer.parseInt(request.getParameter("id_material"));
+            int idUser = Integer.parseInt(request.getParameter("id_user"));
+            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
+            LocalDateTime loanDate = LocalDateTime.now();            
+            String status = "ACTIVO";
+            
+            Controller controller = new Controller();
+            
+            controller.createLoanMaterial(
+                    idMaterial,
+                    idUser,
+                    loanDate,
+                    returnDate,
+                    status
+            );
+            
+            response.sendRedirect("LoanMaterial.jsp?success=true");
+        }catch(Exception e){
+            e.printStackTrace();
+            response.sendRedirect("LoanMaterial.jsp?error=true");
+        }
     }
 
     /**

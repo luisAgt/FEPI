@@ -5,7 +5,6 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 /**
@@ -27,7 +25,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Academic_Group.findByIdGroup", query = "SELECT a FROM Academic_Group a WHERE a.idGroup = :idGroup"),
     @NamedQuery(name = "Academic_Group.findBySemester", query = "SELECT a FROM Academic_Group a WHERE a.semester = :semester"),
     @NamedQuery(name = "Academic_Group.findByCarrer", query = "SELECT a FROM Academic_Group a WHERE a.carrer = :carrer"),
-    @NamedQuery(name = "Academic_Group.findByTurn", query = "SELECT a FROM Academic_Group a WHERE a.turn = :turn")})
+    @NamedQuery(name = "Academic_Group.findByAGroup", query = "SELECT a FROM Academic_Group a WHERE a.aGroup = :aGroup")})
 public class Academic_Group implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,12 +36,11 @@ public class Academic_Group implements Serializable {
     private Integer idGroup;
     @Size(max = 2)
     private String semester;
-    @Size(max = 2)
+    @Size(max = 4)
     private String carrer;
-    @Size(max = 2)
-    private String turn;
-    @OneToMany(mappedBy = "idGroup")
-    private Collection<Schedule> scheduleCollection;
+    @Size(max = 5)
+    @Column(name = "a_group")
+    private String aGroup;
 
     public Academic_Group() {
     }
@@ -76,20 +73,12 @@ public class Academic_Group implements Serializable {
         this.carrer = carrer;
     }
 
-    public String getTurn() {
-        return turn;
+    public String getAGroup() {
+        return aGroup;
     }
 
-    public void setTurn(String turn) {
-        this.turn = turn;
-    }
-
-    public Collection<Schedule> getScheduleCollection() {
-        return scheduleCollection;
-    }
-
-    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
-        this.scheduleCollection = scheduleCollection;
+    public void setAGroup(String aGroup) {
+        this.aGroup = aGroup;
     }
 
     @Override

@@ -5,7 +5,6 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 /**
@@ -26,7 +24,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Classroom.findAll", query = "SELECT c FROM Classroom c"),
     @NamedQuery(name = "Classroom.findByIdClassroom", query = "SELECT c FROM Classroom c WHERE c.idClassroom = :idClassroom"),
     @NamedQuery(name = "Classroom.findByBuilding", query = "SELECT c FROM Classroom c WHERE c.building = :building"),
-    @NamedQuery(name = "Classroom.findByFloor", query = "SELECT c FROM Classroom c WHERE c.floor = :floor"),
     @NamedQuery(name = "Classroom.findByClassroom", query = "SELECT c FROM Classroom c WHERE c.classroom = :classroom")})
 public class Classroom implements Serializable {
 
@@ -38,12 +35,8 @@ public class Classroom implements Serializable {
     private Integer idClassroom;
     @Size(max = 2)
     private String building;
-    @Size(max = 2)
-    private String floor;
     @Size(max = 3)
     private String classroom;
-    @OneToMany(mappedBy = "idClassroom")
-    private Collection<Schedule> scheduleCollection;
 
     public Classroom() {
     }
@@ -68,28 +61,12 @@ public class Classroom implements Serializable {
         this.building = building;
     }
 
-    public String getFloor() {
-        return floor;
-    }
-
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
     public String getClassroom() {
         return classroom;
     }
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
-    }
-
-    public Collection<Schedule> getScheduleCollection() {
-        return scheduleCollection;
-    }
-
-    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
-        this.scheduleCollection = scheduleCollection;
     }
 
     @Override

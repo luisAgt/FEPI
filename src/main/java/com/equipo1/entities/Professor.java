@@ -5,7 +5,6 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
@@ -28,7 +25,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),
     @NamedQuery(name = "Professor.findByIdProfessor", query = "SELECT p FROM Professor p WHERE p.idProfessor = :idProfessor"),
-    @NamedQuery(name = "Professor.findByBoletaPr", query = "SELECT p FROM Professor p WHERE p.boletaPr = :boletaPr")})
+    @NamedQuery(name = "Professor.findByBoletaPr", query = "SELECT p FROM Professor p WHERE p.boletaPr = :boletaPr"),
+    @NamedQuery(name = "Professor.findByIdDepartment", query = "SELECT p FROM Professor p WHERE p.idDepartment = :idDepartment")})
 public class Professor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,14 +38,11 @@ public class Professor implements Serializable {
     @Size(max = 45)
     @Column(name = "boleta_pr")
     private String boletaPr;
-    @JoinColumn(name = "id_department", referencedColumnName = "id_department")
-    @ManyToOne
-    private Department idDepartment;
+    @Column(name = "id_department")
+    private Integer idDepartment;
     @JoinColumn(name = "id_professor", referencedColumnName = "id_user", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private System_user systemuser;
-    @OneToMany(mappedBy = "idProfessor")
-    private Collection<Schedule> scheduleCollection;
 
     public Professor() {
     }
@@ -72,11 +67,11 @@ public class Professor implements Serializable {
         this.boletaPr = boletaPr;
     }
 
-    public Department getIdDepartment() {
+    public Integer getIdDepartment() {
         return idDepartment;
     }
 
-    public void setIdDepartment(Department idDepartment) {
+    public void setIdDepartment(Integer idDepartment) {
         this.idDepartment = idDepartment;
     }
 
@@ -86,14 +81,6 @@ public class Professor implements Serializable {
 
     public void setSystemuser(System_user systemuser) {
         this.systemuser = systemuser;
-    }
-
-    public Collection<Schedule> getScheduleCollection() {
-        return scheduleCollection;
-    }
-
-    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
-        this.scheduleCollection = scheduleCollection;
     }
 
     @Override

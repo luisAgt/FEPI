@@ -4,8 +4,13 @@
  */
 package com.equipo.servlets;
 
+import com.equipo1.entities.Book;
+import com.equipo1.entities.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +62,13 @@ public class SvLoanBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        Controller controller = new Controller();
+        
+        List<Book> books = controller.getAvailableBooks();
+        
+        request.setAttribute("books", books);
+        
+        request.getRequestDispatcher("LoanBook.jsp").forward(request, response);
     }
 
     /**
@@ -72,6 +83,30 @@ public class SvLoanBook extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        try{
+            int idBook = Integer.parseInt(request.getParameter("id_book"));
+            int idUser = Integer.parseInt(request.getParameter("id_user"));
+            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
+            LocalDateTime loanDate = LocalDateTime.now();
+            String status = "ACTIVO";
+
+            Controller controller = new Controller();
+
+            controller.createLoanBook(
+                    idBook,
+                    idUser,
+                    loanDate,
+                    returnDate,
+                    status
+            );
+
+            response.sendRedirect("LoanBook.jsp?success=true");
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            response.sendRedirect("LoanBook.jsp?error=true");
+        }
+        
         
     }
 

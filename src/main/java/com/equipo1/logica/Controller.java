@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.equipo1.persistence;
+package com.equipo1.logica;
 
 /**
  *
  * @author XPxTBxLLX
  */
-public class ClassroomJpaController {
+public class Controller {
     
 }

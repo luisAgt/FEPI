@@ -18,5 +18,6 @@
     <class>com.equipo1.entities.Access_school</class>
     <class>com.equipo1.entities.Lab_material</class>
     <class>com.equipo1.entities.Loan_book</class>
+    <class>com.equipo1.entities.System_user_1</class>
   </persistence-unit>
 </persistence>

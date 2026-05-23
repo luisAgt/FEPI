@@ -71,7 +71,11 @@ public class SvSchoolAccess extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        String idUser = request.getParameter("user_id");
+        String checkDate;
+        String status = request.getParameter("status");
+        String gate;
     }
 
     /**
