@@ -5,7 +5,7 @@
 package com.equipo.servlets;
 
 import com.equipo1.entities.Book;
-import com.equipo1.entities.Controller;
+import com.equipo1.logica.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -65,10 +65,10 @@ public class SvLoanBook extends HttpServlet {
         Controller controller = new Controller();
         
         List<Book> books = controller.getAvailableBooks();
-        
+        System.out.println("Libros: " + books.size());
         request.setAttribute("books", books);
         
-        request.getRequestDispatcher("LoanBook.jsp").forward(request, response);
+        request.getRequestDispatcher("/LoanBook.jsp").forward(request, response);
     }
 
     /**
@@ -100,11 +100,11 @@ public class SvLoanBook extends HttpServlet {
                     status
             );
 
-            response.sendRedirect("LoanBook.jsp?success=true");
+            response.sendRedirect("SvLoanBook?success=true");
             
         }catch(Exception e){
             e.printStackTrace();
-            response.sendRedirect("LoanBook.jsp?error=true");
+            response.sendRedirect("SvLoanBook?error=true");
         }
         
         

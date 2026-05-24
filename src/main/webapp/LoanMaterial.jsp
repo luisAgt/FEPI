@@ -25,16 +25,20 @@
             <input type="text" name="status" placeholder="Estatus" ><br><br>
             <input type="text" name="date_loan" placeholder="Fecha de emision" readonly><br><br>
             <input type="date" name="date_return" placeholder="Fecha de devolución"><br><br>
-            <select name = "id_book">
-                <%
-                    List<Lab_material> materials = (List<Lab_material>) request.getAttribute("books");
-                    
-                    for (Lab_material b : materials){
+            <select name = "id_material">
+               <%
+                     List<Lab_material> materials = (List<Lab_material>) request.getAttribute("materials");
+                    if(materials != null ){
+                    for (Lab_material m : materials){
+                        System.out.println(m.getMaterialName());
                 %>
-                <<option value="<%= b.getIdLabMaterial()%>">
-                    <%= b.getMaterialName() %>
+                <option value="<%= m.getIdLabMaterial()%>">
+                    <%= m.getMaterialName() %>
                 </option>
-                <% } %>
+                <% 
+                        }
+                    }
+                %>
             </select>
         </div>
         <div>

@@ -18,18 +18,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "System_user.findAll", query = "SELECT s FROM System_user s"),
     @NamedQuery(name = "System_user.findByIdUser", query = "SELECT s FROM System_user s WHERE s.idUser = :idUser"),
-    @NamedQuery(name = "System_user.findByNames", query = "SELECT s FROM System_user s WHERE s.names = :names"),
-    @NamedQuery(name = "System_user.findByPaternalSurname", query = "SELECT s FROM System_user s WHERE s.paternalSurname = :paternalSurname"),
-    @NamedQuery(name = "System_user.findByMaternalSurname", query = "SELECT s FROM System_user s WHERE s.maternalSurname = :maternalSurname"),
+    @NamedQuery(name = "System_user.findByFullName", query = "SELECT s FROM System_user s WHERE s.fullName = :fullName"),
     @NamedQuery(name = "System_user.findByBirthdate", query = "SELECT s FROM System_user s WHERE s.birthdate = :birthdate"),
     @NamedQuery(name = "System_user.findByUsername", query = "SELECT s FROM System_user s WHERE s.username = :username"),
     @NamedQuery(name = "System_user.findByPassword", query = "SELECT s FROM System_user s WHERE s.password = :password"),
@@ -43,20 +43,9 @@ public class System_user implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_user")
     private Integer idUser;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    private String names;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "paternal_surname")
-    private String paternalSurname;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "maternal_surname")
-    private String maternalSurname;
+    @Size(max = 255)
+    @Column(name = "full_name")
+    private String fullName;
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.DATE)
@@ -82,11 +71,8 @@ public class System_user implements Serializable {
         this.idUser = idUser;
     }
 
-    public System_user(Integer idUser, String names, String paternalSurname, String maternalSurname, Date birthdate, String password, String role) {
+    public System_user(Integer idUser, Date birthdate, String password, String role) {
         this.idUser = idUser;
-        this.names = names;
-        this.paternalSurname = paternalSurname;
-        this.maternalSurname = maternalSurname;
         this.birthdate = birthdate;
         this.password = password;
         this.role = role;
@@ -100,28 +86,12 @@ public class System_user implements Serializable {
         this.idUser = idUser;
     }
 
-    public String getNames() {
-        return names;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setNames(String names) {
-        this.names = names;
-    }
-
-    public String getPaternalSurname() {
-        return paternalSurname;
-    }
-
-    public void setPaternalSurname(String paternalSurname) {
-        this.paternalSurname = paternalSurname;
-    }
-
-    public String getMaternalSurname() {
-        return maternalSurname;
-    }
-
-    public void setMaternalSurname(String maternalSurname) {
-        this.maternalSurname = maternalSurname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Date getBirthdate() {

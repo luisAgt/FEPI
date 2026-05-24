@@ -33,6 +33,28 @@ public class PersistenceController {
     public System_user findUser(int idUser) {
         return userJPA.findSystem_user(idUser);
     }
+    /**/
+
+    /**
+     * /
+     * @param uname
+     * @param pass
+     * @return 
+     */
+    public System_user ValidateUser(String uname, String pass) {
+        
+        if (uname == null || pass == null || uname.isEmpty() || pass.isEmpty()){
+            return null;
+        }
+        List<System_user> users = userJPA.findSystem_userEntities();
+        
+        for (System_user user : users){
+            if(user.getUsername().equals(uname) && user.getPassword().equals(pass)){
+                return user;
+            }
+        }
+        return null;
+    }
   
     /**
      * @param idBook
@@ -47,9 +69,9 @@ public class PersistenceController {
      * @return
      */
     public List<Book> getAvailableBooks() {
-       List<Book> books = bookJPA.findBookEntities();
-       
-       return books.stream().filter(book -> book.getStock()>0).toList();
+       //List<Book> books = bookJPA.findBookEntities();
+       return bookJPA.findBookEntities();
+       //return books.stream().filter(book -> book.getStock()>0).toList();
     }
 
     /**
@@ -101,8 +123,8 @@ public class PersistenceController {
      * @return
      */
     public List<Lab_material> getAvailableMaterials() {
-        List<Lab_material> materials = materialJPA.findLab_materialEntities();
-        
-        return materials.stream().filter(material -> material.getStock()>0).toList();
+        //List<Lab_material> materials = materialJPA.findLab_materialEntities();
+        return materialJPA.findLab_materialEntities();
+        //return materials.stream().filter(material -> material.getStock()>0).toList();
     }
 }

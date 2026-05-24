@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <!-- Define Persistence Unit -->
-  <persistence-unit name="AssistanceSystemPU" transaction-type="JTA">
+  <persistence-unit name="AssistanceSystemPU" transaction-type="RESOURCE_LOCAL">
+      
+      <provider>
+          org.hibernate.jpa.HibernatePersistenceProvider
+      </provider>
     <class>com.equipo1.entities.Book</class>
-    <class>com.equipo1.entities.Department</class>
     <class>com.equipo1.entities.Schedule</class>
     <class>com.equipo1.entities.Horary</class>
     <class>com.equipo1.entities.Enrollment</class>
@@ -18,6 +21,15 @@
     <class>com.equipo1.entities.Access_school</class>
     <class>com.equipo1.entities.Lab_material</class>
     <class>com.equipo1.entities.Loan_book</class>
-    <class>com.equipo1.entities.System_user_1</class>
+    
+      <properties>
+            <property name ="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+            <property name ="javax.persistence.jdbc.url" value="jdbc:mariadb://serverless-europe-west4.sysp0000.db2.skysql.com:4065/Assistance_System?sslMode=trust"/>
+            <property name ="javax.persistence.jdbc.user" value="dbpgf00243047"/>
+            <property name="javax.persistence.jdbc.password" value="A3taWmm6VcTIj3PjXRge/eH1t"/>
+            <property name ="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
   </persistence-unit>
 </persistence>

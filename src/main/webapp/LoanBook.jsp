@@ -29,13 +29,17 @@
             <select name = "id_book">
                 <%
                     List<Book> books = (List<Book>) request.getAttribute("books");
-                    
-                    for (Book b : books){
+                    if(books != null){
+                        for (Book b : books){
+                            System.out.println(b.getTittle());
                 %>
-                <<option value="<%= b.getIdBook()%>">
+                <option value="<%= b.getIdBook()%>">
                     <%= b.getTittle() %>
                 </option>
-                <% } %>
+                <%  
+                        }
+                    }
+                %>
             </select>
         </div>
         

@@ -4,7 +4,7 @@
  */
 package com.equipo.servlets;
 
-import com.equipo1.entities.Controller;
+import com.equipo1.logica.Controller;
 import com.equipo1.entities.Lab_material;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,8 +67,9 @@ public class SvLoanMaterial extends HttpServlet {
         Controller controller = new Controller();
         
         List<Lab_material> materials = controller.getAvailableMaterials();
+        System.out.println("Materiales: " + materials.size());
         request.setAttribute("materials", materials);        
-        request.getRequestDispatcher("LoanMaterial.jsp").forward(request, response);
+        request.getRequestDispatcher("/LoanMaterial.jsp").forward(request, response);
     }
 
     /**
@@ -100,10 +101,10 @@ public class SvLoanMaterial extends HttpServlet {
                     status
             );
             
-            response.sendRedirect("LoanMaterial.jsp?success=true");
+            response.sendRedirect("SvLoanMaterial?success=true");
         }catch(Exception e){
             e.printStackTrace();
-            response.sendRedirect("LoanMaterial.jsp?error=true");
+            response.sendRedirect("SvLoanMaterial?error=true");
         }
     }
 

@@ -4,6 +4,8 @@
  */
 package com.equipo.servlets;
 
+import com.equipo1.entities.System_user;
+import com.equipo1.logica.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -71,7 +74,52 @@ public class SvLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        try{
+        String uname = request.getParameter("username");
+        String pass = request.getParameter("password");
+        
+        Controller controller = new Controller();
+        System_user user = controller.ValidateUser(uname, pass);
+                
+        if(user == null){
+            response.sendRedirect("Login.jsp?error=Credentials");
+            return;
+        }
+        
+        String role = user.getRole();
+        HttpSession session = request.getSession();
+        
+        session.setAttribute("user", user);
+        session.setAttribute("role", role);
+        session.setAttribute("id_user", user.getIdUser());
+        session.setAttribute("username", user.getUsername());
+
+        switch (role) {
+                case "ADMIN":
+                    response.sendRedirect("Admin.jsp");
+                    break;
+                case "STUDENT":
+                    response.sendRedirect("Student.jsp");
+                    break;
+                case "PROFESSOR":
+                    response.sendRedirect("Professor.jsp");
+                    break;
+                case "EXCECUTIVE":
+                    response.sendRedirect("Excecutive.jsp");
+                    break;
+                default:
+                    response.sendRedirect("Login.jsp?error=role");
+                    break;
+            }
+       
+        }catch(Exception e){
+            e.printStackTrace();
+            response.sendRedirect("Login.jsp?error=server");
+        }
+        
+        
     }
 
     /**
