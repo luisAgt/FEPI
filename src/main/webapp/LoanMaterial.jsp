@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>LABORATORIO</title>
 </head>
 <body>
@@ -25,7 +26,7 @@
             <input type="text" name="status" placeholder="Estatus" ><br><br>
             <input type="text" name="date_loan" placeholder="Fecha de emision" readonly><br><br>
             <input type="date" name="date_return" placeholder="Fecha de devolución"><br><br>
-            <select name = "id_material">
+            <select name = "id_material" class="form-select">
                <%
                      List<Lab_material> materials = (List<Lab_material>) request.getAttribute("materials");
                     if(materials != null ){

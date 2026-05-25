@@ -118,6 +118,11 @@ public class SvLogin extends HttpServlet {
                 case "EXECUTIVE":
                     response.sendRedirect("Executive.jsp");
                     break;
+                case "LIBRARIAN":
+                    response.sendRedirect("Library.jsp");
+                    break;
+                case "ANALOGIC":
+                    response.sendRedirect("Laboratory.jsp");
                 default:
                     response.sendRedirect("Login.jsp?error=role");
                     request.getParameter("error");
