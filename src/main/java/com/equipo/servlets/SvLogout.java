@@ -4,8 +4,6 @@
  */
 package com.equipo.servlets;
 
-import com.equipo1.entities.System_user;
-import com.equipo1.logica.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,8 +17,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvLogin", urlPatterns = {"/SvLogin"})
-public class SvLogin extends HttpServlet {
+@WebServlet(name = "SvLogout", urlPatterns = {"/SvLogout"})
+public class SvLogout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class SvLogin extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvLogin</title>");
+            out.println("<title>Servlet Logout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvLogin at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,14 +59,14 @@ public class SvLogin extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        
         HttpSession session = request.getSession(false);
         
         if(session != null){
             session.invalidate();
         }
         
-        response.sendRedirect("Login.jsp");
-        
+        response.sendRedirect("Login.jsp?success=logout");
     }
 
     /**
@@ -83,54 +81,6 @@ public class SvLogin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        
-        try{
-        String uname = request.getParameter("username");
-        String pass = request.getParameter("password");
-        
-        Controller controller = new Controller();
-        System_user user = controller.ValidateUser(uname, pass);
-                
-        if(user == null){
-            response.sendRedirect("Login.jsp?error=Credentials");
-            request.getParameter("error");
-            return;
-        }
-        
-        String role = user.getRole();
-        HttpSession session = request.getSession();
-        
-        session.setAttribute("user", user);
-        session.setAttribute("role", role);
-        session.setAttribute("id_user", user.getIdUser());
-        session.setAttribute("username", user.getUsername());
-
-        switch (role) {
-                case "ADMIN":
-                    response.sendRedirect("Admin.jsp");
-                    break;
-                case "STUDENT":
-                    response.sendRedirect("Student.jsp");
-                    break;
-                case "PROFESSOR":
-                    response.sendRedirect("Professor.jsp");
-                    break;
-                case "EXECUTIVE":
-                    response.sendRedirect("Executive.jsp");
-                    break;
-                default:
-                    response.sendRedirect("Login.jsp?error=role");
-                    request.getParameter("error");
-                    break;
-            }
-       
-        }catch(Exception e){
-            e.printStackTrace();
-            response.sendRedirect("Login.jsp?error=server");
-            request.getParameter("error");
-        }
-        
-        
     }
 
     /**

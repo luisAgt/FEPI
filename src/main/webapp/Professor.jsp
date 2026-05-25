@@ -14,6 +14,23 @@
         return;
     }
 %>
+
+<%
+    response.setHeader("Cache-Control",
+            "no-cache, no-store, must-revalidate");
+
+    response.setHeader("Pragma", "no-cache");
+
+    response.setDateHeader("Expires", 0);
+
+    if(role == null || !role.equals("PROFESSOR")){
+
+        response.sendRedirect("Login.jsp");
+
+        return;
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,5 +40,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <a href="SvLogout">Cerrar session</a>
     </body>
 </html>
