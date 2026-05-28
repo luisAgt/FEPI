@@ -18,9 +18,10 @@
     <body>
         <h1><---------B I B L I O T E C A ---------></h1>
         <h2>Bienvenid@, <%=user.getFullName() %></h2>
-        <a href="SvLogout">Registrar prestamo</a> <br><br>
-        <a href="SvLogout">Ver prestamos</a> <br><br>
-        <a href="SvLogout">Consultar libros</a> <br><br>
+        <a href="SvLoanBook">Registrar prestamo</a> <br><br>
+        <a href="">Ver prestamos</a> <br><br>
+        <a href="">Consultar libros</a> <br><br>
         <a href="SvLogout">Cerrar session</a>
+              
     </body>
 </html>

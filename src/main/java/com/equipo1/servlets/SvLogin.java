@@ -2,27 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.equipo.servlets;
+package com.equipo1.servlets;
 
-import com.equipo1.entities.Book;
-import com.equipo1.logica.Controller;
+import com.equipo1.entities.System_user;
+import com.equipo1.logic.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvLoanBook", urlPatterns = {"/SvLoanBook"})
-public class SvLoanBook extends HttpServlet {
+@WebServlet(name = "SvLogin", urlPatterns = {"/SvLogin"})
+public class SvLogin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +39,10 @@ public class SvLoanBook extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvLoanBook</title>");
+            out.println("<title>Servlet SvLogin</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvLoanBook at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SvLogin at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,13 +60,15 @@ public class SvLoanBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Controller controller = new Controller();
+        //processRequest(request, response);
+        HttpSession session = request.getSession(false);
         
-        List<Book> books = controller.getAvailableBooks();
-        System.out.println("Libros: " + books.size());
-        request.setAttribute("books", books);
+        if(session != null){
+            session.invalidate();
+        }
         
-        request.getRequestDispatcher("/LoanBook.jsp").forward(request, response);
+        response.sendRedirect("Login.jsp");
+        
     }
 
     /**
@@ -83,28 +83,56 @@ public class SvLoanBook extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        
         try{
-            int idBook = Integer.parseInt(request.getParameter("id_book"));
-            int idUser = Integer.parseInt(request.getParameter("id_user"));
-            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
-            LocalDateTime loanDate = LocalDateTime.now();
-            String status = "ACTIVO";
+        String uname = request.getParameter("username");
+        String pass = request.getParameter("password");
+        
+        Controller controller = new Controller();
+        System_user user = controller.ValidateUser(uname, pass);
+                
+        if(user == null){
+            response.sendRedirect("Login.jsp?error=Credentials");
+            request.getParameter("error");
+            return;
+        }
+        
+        String role = user.getRole();
+        HttpSession session = request.getSession();
+        
+        session.setAttribute("user", user);
+        session.setAttribute("role", role);
+        session.setAttribute("id_user", user.getIdUser());
+        session.setAttribute("username", user.getUsername());
 
-            Controller controller = new Controller();
-
-            controller.createLoanBook(
-                    idBook,
-                    idUser,
-                    loanDate,
-                    returnDate,
-                    status
-            );
-
-            response.sendRedirect("SvLoanBook?success=true");
-            
+        switch (role) {
+                case "ADMIN":
+                    response.sendRedirect("Admin.jsp");
+                    break;
+                case "STUDENT":
+                    response.sendRedirect("Student.jsp");
+                    break;
+                case "PROFESSOR":
+                    response.sendRedirect("Professor.jsp");
+                    break;
+                case "EXECUTIVE":
+                    response.sendRedirect("Executive.jsp");
+                    break;
+                case "LIBRARIAN":
+                    response.sendRedirect("Library.jsp");
+                    break;
+                case "ANALOGIC":
+                    response.sendRedirect("Laboratory.jsp");
+                default:
+                    response.sendRedirect("Login.jsp?error=role");
+                    request.getParameter("error");
+                    break;
+            }
+       
         }catch(Exception e){
             e.printStackTrace();
-            response.sendRedirect("SvLoanBook?error=true");
+            response.sendRedirect("Login.jsp?error=server");
+            request.getParameter("error");
         }
         
         

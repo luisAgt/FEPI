@@ -9,6 +9,7 @@ import com.equipo1.entities.Book;
 import com.equipo1.entities.Lab_material;
 import com.equipo1.entities.Loan_book;
 import com.equipo1.entities.Loan_material;
+import com.equipo1.entities.Student;
 import com.equipo1.entities.System_user;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class PersistenceController {
     
     System_userJpaController userJPA = new System_userJpaController();
+    StudentJpaController studentJPA = new StudentJpaController();
     
     BookJpaController bookJPA = new BookJpaController();
     Loan_bookJpaController loanBJPA = new Loan_bookJpaController();
@@ -133,5 +135,20 @@ public class PersistenceController {
 
     public void createAccess(Access_school acc) throws Exception {
         accessJPA.create(acc);
+    }
+
+    public void createUser(System_user user) throws Exception {
+        userJPA.create(user);
+    }
+
+    public void createStudent(Student student) throws Exception {
+        studentJPA.create(student);
+    }
+    
+    public Student findStudentByBoleta(String boleta){
+        return studentJPA.findStudentByBoleta(boleta);
+    }
+    public Access_school findLastAccessByUser(int id){
+        return accessJPA.findLastAccessByUser(id);
     }
 }

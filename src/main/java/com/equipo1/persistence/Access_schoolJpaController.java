@@ -90,6 +90,23 @@ public class Access_schoolJpaController {    // Cambia Access_school por el nomb
             em.close();
         }
     }
+    
+    public Access_school findLastAccessByUser(int idUser){
+        EntityManager em = getEntityManager();
+        try{
+            return em.createQuery(
+                    "SELECT a FROM Access_school a " +
+                            "WHERE a.idUser.idUser = :idUser " +
+                            "ORDER BY a.checkDate DESC",
+                    Access_school.class                    
+            ).setParameter("idUser", idUser).setMaxResults(1).getSingleResult();
+            
+        }catch(Exception e){
+            return null;
+        }finally {
+            em.close();
+        }
+    }
 
     public int getAccess_schoolCount() {
         EntityManager em = getEntityManager();

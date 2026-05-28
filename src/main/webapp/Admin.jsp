@@ -42,6 +42,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         <title>JSP Page ADMIN</title>
     </head>
     <body>
@@ -53,5 +54,7 @@
         <a href="url"> Modificar libro</a> <br><br>
         <a href="url"> Registrar material de laboratorio</a> <br><br>
         <a href="url"> Modificar material de laboratorio</a> <br><br>
+        
+        <a href="SvLogout">Cerrar session</a>
     </body>
 </html>

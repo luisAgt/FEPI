@@ -2,27 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.equipo.servlets;
+package com.equipo1.servlets;
 
-import com.equipo1.logica.Controller;
-import com.equipo1.entities.Lab_material;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvLoanMaterial", urlPatterns = {"/SvLoanMaterial"})
-public class SvLoanMaterial extends HttpServlet {
+@WebServlet(name = "SvLogout", urlPatterns = {"/SvLogout"})
+public class SvLogout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class SvLoanMaterial extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvLoanMaterial</title>");
+            out.println("<title>Servlet Logout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvLoanMaterial at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,12 +60,13 @@ public class SvLoanMaterial extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
-        Controller controller = new Controller();
+        HttpSession session = request.getSession(false);
         
-        List<Lab_material> materials = controller.getAvailableMaterials();
-        System.out.println("Materiales: " + materials.size());
-        request.setAttribute("materials", materials);        
-        request.getRequestDispatcher("/LoanMaterial.jsp").forward(request, response);
+        if(session != null){
+            session.invalidate();
+        }
+        
+        response.sendRedirect("Login.jsp?success=logout");
     }
 
     /**
@@ -84,28 +81,6 @@ public class SvLoanMaterial extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        try{
-            int idMaterial = Integer.parseInt(request.getParameter("id_material"));
-            int idUser = Integer.parseInt(request.getParameter("id_user"));
-            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
-            LocalDateTime loanDate = LocalDateTime.now();            
-            String status = "ACTIVO";
-            
-            Controller controller = new Controller();
-            
-            controller.createLoanMaterial(
-                    idMaterial,
-                    idUser,
-                    loanDate,
-                    returnDate,
-                    status
-            );
-            
-            response.sendRedirect("SvLoanMaterial?success=true");
-        }catch(Exception e){
-            e.printStackTrace();
-            response.sendRedirect("SvLoanMaterial?error=true");
-        }
     }
 
     /**

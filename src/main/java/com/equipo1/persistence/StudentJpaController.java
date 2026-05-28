@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -66,6 +67,19 @@ public class StudentJpaController {    // Cambia Student por el nombre real
         } finally {
             em.close();
         }
+    }
+    
+    public Student findStudentByBoleta(String boleta){
+        EntityManager em = getEntityManager();
+
+        try{
+            return em.createNamedQuery("Student.findByBoletaSt", Student.class).setParameter("boletaSt", boleta).getSingleResult();
+        }   catch(NoResultException e){
+            return null;
+        }   finally{
+            em.close();
+        }
+        
     }
 
     public List<Student> findStudentEntities() {

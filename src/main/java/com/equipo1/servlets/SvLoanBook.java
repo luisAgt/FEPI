@@ -2,12 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.equipo.servlets;
+package com.equipo1.servlets;
 
-import com.equipo1.logica.Controller;
+import com.equipo1.entities.Book;
+import com.equipo1.logic.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvSchoolAccess", urlPatterns = {"/SvSchoolAccess"})
-public class SvSchoolAccess extends HttpServlet {
+@WebServlet(name = "SvLoanBook", urlPatterns = {"/SvLoanBook"})
+public class SvLoanBook extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +41,10 @@ public class SvSchoolAccess extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvSchoolAccess</title>");
+            out.println("<title>Servlet SvLoanBook</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvSchoolAccess at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SvLoanBook at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,9 +62,13 @@ public class SvSchoolAccess extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        Controller controller = new Controller();
         
+        List<Book> books = controller.getAvailableBooks();
+        System.out.println("Libros: " + books.size());
+        request.setAttribute("books", books);
         
+        request.getRequestDispatcher("/LoanBook.jsp").forward(request, response);
     }
 
     /**
@@ -77,24 +84,30 @@ public class SvSchoolAccess extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         try{
-            int id_user = Integer.parseInt(request.getParameter("id_user"));
-            LocalDateTime date_a = LocalDateTime.now();
-            String access = request.getParameter("status");
-            int gate = 1;
-            
+            int idBook = Integer.parseInt(request.getParameter("id_book"));
+            int idUser = Integer.parseInt(request.getParameter("id_user"));
+            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
+            LocalDateTime loanDate = LocalDateTime.now();
+            String status = "ACTIVO";
+
             Controller controller = new Controller();
-            
-            controller.createAccess(
-                    id_user,
-                    date_a,
-                    access,
-                    gate
+
+            controller.createLoanBook(
+                    idBook,
+                    idUser,
+                    loanDate,
+                    returnDate,
+                    status
             );
-            response.sendRedirect("SvSchoolAccess?success=true");
+
+            response.sendRedirect("SvLoanBook?success=true");
+            
         }catch(Exception e){
             e.printStackTrace();
-            response.sendRedirect("SvSchoolAccess?success=error");
+            response.sendRedirect("SvLoanBook?error=true");
         }
+        
+        
     }
 
     /**

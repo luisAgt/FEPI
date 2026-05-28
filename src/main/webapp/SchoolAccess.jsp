@@ -3,9 +3,22 @@
     Created on : 20 may 2026, 5:14:17 p.m.
     Author     : XPxTBxLLX
 --%>
+<%
+String error =
+    (String) request.getAttribute("error");
+
+if(error != null){
+%>
+
+<div class="alert alert-danger">
+    <%= error %>
+</div>
+
+<%
+}
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,23 +28,44 @@
     <title name=" school_access">School Access</title>
 </head>
 <body >
+    
     <h1><---------A C C E S C O M---------></h1>
     <div>
         <form action="SvSchoolAccess" method="POST">
             <div>
-                <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" readonly autofocus><br><br>
+                <input type="text" name="qr" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" autofocus  value ="" autocomplete="off"><br><br>
                 <input type="text" name="status" placeholder="Estatus" readonly><br><br>
-                <input type="text" name="fullname" placeholder="Nombre Completo" readonly autofocus> <br><br>
-                <input type="date" name="birthdate" placeholder="Fecha de Nacimiento" readonly autofocus><br><br>
-                <input type="text" name="carrer" placeholder="Carrera" readonly autofocus><br><br>
-                <input type="text" name="email" placeholder="Correo" readonly autofocus><br><br>
+                <input type="text" name="fullname" placeholder="Nombre Completo" readonly value="${fullname}"> <br><br>
+                <input type="date" name="birthdate" placeholder="Fecha de Nacimiento" readonly value="${birthdate}"><br><br>
+                <input type="text" name="carrer" placeholder="Carrera" readonly value="${carrer}"><br><br>
+                <input type="text" name="email" placeholder="Correo" readonly value="${email}" ><br><br>
             </div>       
             <div class="">                
-                <input type="datetime-local" name="date_a" placeholder="Fecha de acceso"  autofocus><br><br>
-                <input type="text" name="access" placeholder="Tipo de acceso" readonly autofocus><br><br>
-                <input type="text" name="gate" placeholder="Puerta de acceso" readonly autofocus><br><br>
+                <input type="text" name="date_a" placeholder="Fecha de acceso" readonly value="${date_a}" ><br><br>
+                <input type="text" name="access" placeholder="Tipo de acceso" readonly value="${access}"><br><br>
+                <input type="text" name="gate" placeholder="Puerta de acceso" readonly value="${gate}"><br><br>
             </div>
         </form>
     </div>
+    
+        <script>
+        
+                    const qrInput = document.getElementById('qrInput');
+
+                    qrInput.addEventListener("keypress", function(event){
+                        if(event.key === "Enter"){
+                            event.preventDefault();
+
+                            this.form.submit();
+                        }
+
+                    });
+
+                    window.onload = function() {
+                        qrInput.focus();
+                    }
+
+        </script>
+
 </body>
 </html>
