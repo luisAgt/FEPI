@@ -4,6 +4,7 @@
  */
 package com.equipo1.logica;
 
+import com.equipo1.entities.Access_school;
 import com.equipo1.entities.Book;
 import com.equipo1.entities.Lab_material;
 import com.equipo1.entities.Loan_book;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.util.List;
 /**
- *
+ *s
  * @author XPxTBxLLX
  */
 public class Controller {
@@ -94,4 +95,20 @@ public class Controller {
         public List<Lab_material> getAvailableMaterials() {
         return persistence.getAvailableMaterials();
     }    
+
+    public void createAccess(int id_user, LocalDateTime date_a, String access, int gate) throws Exception {
+        System_user user = persistence.findUser(id_user);
+        Access_school acc= new Access_school(); 
+        
+        if(user == null){
+                throw new Exception("Usuario no encontrado");
+            }
+        
+        acc.setIdUser(user);
+        acc.setCheckDate(Timestamp.valueOf(date_a));
+        acc.setStatus(access);
+        acc.setGate(gate);
+        
+        persistence.createAccess(acc);
+    }
 }

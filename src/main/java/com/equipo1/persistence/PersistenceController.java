@@ -4,6 +4,7 @@
  */
 package com.equipo1.persistence;
 
+import com.equipo1.entities.Access_school;
 import com.equipo1.entities.Book;
 import com.equipo1.entities.Lab_material;
 import com.equipo1.entities.Loan_book;
@@ -24,6 +25,8 @@ public class PersistenceController {
     
     Lab_materialJpaController materialJPA = new Lab_materialJpaController();
     Loan_materialJpaController loanMJPA = new Loan_materialJpaController();
+    
+    Access_schoolJpaController accessJPA = new Access_schoolJpaController();
     
     /**
      * 
@@ -126,5 +129,9 @@ public class PersistenceController {
         //List<Lab_material> materials = materialJPA.findLab_materialEntities();
         return materialJPA.findLab_materialEntities();
         //return materials.stream().filter(material -> material.getStock()>0).toList();
+    }
+
+    public void createAccess(Access_school acc) throws Exception {
+        accessJPA.create(acc);
     }
 }

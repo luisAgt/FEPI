@@ -18,9 +18,9 @@
 <body>
     <form action="SvLoanBook" method="POST" class="form">
         <div>
+            <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" readonly autofocus><br><br>
             <input type="text" placeholder="Nombre Completo" readonly autofocus id="qrInput"><br><br>
             <input type="text" placeholder="Boleta" readonly autofocus id="qrInput"><br><br>
-            <input type="text" name="id_user" placeholder="Identificador" readonly autofocus id="qrInput"><br><br>
         </div>
         <div>
             <input type="text" name="status" placeholder="Estatus" ><br><br>

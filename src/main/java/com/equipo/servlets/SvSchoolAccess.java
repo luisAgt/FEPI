@@ -4,8 +4,10 @@
  */
 package com.equipo.servlets;
 
+import com.equipo1.logica.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +59,9 @@ public class SvSchoolAccess extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        
     }
 
     /**
@@ -72,10 +76,25 @@ public class SvSchoolAccess extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        String idUser = request.getParameter("user_id");
-        String checkDate;
-        String status = request.getParameter("status");
-        String gate;
+        try{
+            int id_user = Integer.parseInt(request.getParameter("id_user"));
+            LocalDateTime date_a = LocalDateTime.now();
+            String access = request.getParameter("status");
+            int gate = 1;
+            
+            Controller controller = new Controller();
+            
+            controller.createAccess(
+                    id_user,
+                    date_a,
+                    access,
+                    gate
+            );
+            response.sendRedirect("SvSchoolAccess?success=true");
+        }catch(Exception e){
+            e.printStackTrace();
+            response.sendRedirect("SvSchoolAccess?success=error");
+        }
     }
 
     /**

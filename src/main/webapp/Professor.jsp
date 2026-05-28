@@ -45,7 +45,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
         <h1><---------P R O F E S O R E S---------></h1>
         <h2>Bienvenid@, <%=user.getFullName() %></h2>
         <a href="url">Ver materias inscritas</a> <br><br>
