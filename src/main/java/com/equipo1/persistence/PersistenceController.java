@@ -137,8 +137,8 @@ public class PersistenceController {
         accessJPA.create(acc);
     }
 
-    public void createUser(System_user user) throws Exception {
-        userJPA.create(user);
+    public System_user createUser(System_user user) throws Exception {
+        return         userJPA.create(user);
     }
 
     public void createStudent(Student student) throws Exception {
@@ -150,5 +150,9 @@ public class PersistenceController {
     }
     public Access_school findLastAccessByUser(int id){
         return accessJPA.findLastAccessByUser(id);
+    }
+
+    public System_user findUserById(Integer idUser) {
+        return userJPA.findSystem_userById(idUser);
     }
 }

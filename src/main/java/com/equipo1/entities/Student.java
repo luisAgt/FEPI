@@ -5,54 +5,48 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author XPxTBxLLX
- */
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Student.findAll", query = "SELECT s FROM Student s"),
     @NamedQuery(name = "Student.findByIdStudent", query = "SELECT s FROM Student s WHERE s.idStudent = :idStudent"),
     @NamedQuery(name = "Student.findByCarrer", query = "SELECT s FROM Student s WHERE s.carrer = :carrer"),
     @NamedQuery(name = "Student.findByBoletaSt", query = "SELECT s FROM Student s WHERE s.boletaSt = :boletaSt"),
-    @NamedQuery(name = "Student.findByStatus", query = "SELECT s FROM Student s WHERE s.status = :status")})
+    @NamedQuery(name = "Student.findByStatus", query = "SELECT s FROM Student s WHERE s.status = :status")
+})
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    // 🔥 PK compartida con System_user
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "id_student")
     private Integer idStudent;
+
+    // 🔥 relación 1 a 1 con PK compartida
+    @MapsId
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_student", referencedColumnName = "id_user")
+    private System_user systemuser;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     private String carrer;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "boleta_st")
     private String boletaSt;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     private String status;
-    @JoinColumn(name = "id_student", referencedColumnName = "id_user", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private System_user systemuser;
 
     public Student() {
     }
@@ -110,27 +104,19 @@ public class Student implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idStudent != null ? idStudent.hashCode() : 0);
-        return hash;
+        return (idStudent != null ? idStudent.hashCode() : 0);
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Student)) {
-            return false;
-        }
+        if (!(object instanceof Student)) return false;
         Student other = (Student) object;
-        if ((this.idStudent == null && other.idStudent != null) || (this.idStudent != null && !this.idStudent.equals(other.idStudent))) {
-            return false;
-        }
-        return true;
+        return (this.idStudent != null || other.idStudent == null)
+            && (this.idStudent == null || this.idStudent.equals(other.idStudent));
     }
 
     @Override
     public String toString() {
-        return "com.equipo1.entities.Student[ idStudent=" + idStudent + " ]";
+        return "Student[idStudent=" + idStudent + "]";
     }
-    
 }

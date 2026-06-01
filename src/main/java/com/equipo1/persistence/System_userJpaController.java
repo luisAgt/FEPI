@@ -22,14 +22,22 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
         return emf.createEntityManager();
     }
 
-    public void create(System_user entidad) throws Exception {
+    public System_user create(System_user entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(entidad);
+            em.flush();
             em.getTransaction().commit();
-        } finally {
+            return entidad;
+        }catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } 
+        finally {
             if (em != null) em.close();
         }
     }
@@ -97,6 +105,16 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
             String simpleName = System_user.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
+            em.close();
+        }
+    }
+
+    System_user findSystem_userById(Integer idUser) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.find(System_user.class, idUser);
+        }finally{
             em.close();
         }
     }

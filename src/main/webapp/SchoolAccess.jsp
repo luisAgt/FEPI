@@ -30,10 +30,11 @@ if(error != null){
 <body >
     
     <h1><---------A C C E S C O M---------></h1>
+                  <h2>PRINCIPAL</h2>
     <div>
         <form action="SvSchoolAccess" method="POST">
             <div>
-                <input type="text" name="qr" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" autofocus  value ="" autocomplete="off"><br><br>
+                <input type="text" name="boleta" id="boletaInput" placeholder="Escanea tu Boleta"  value="${boleta}" autofocus autocomplete="off"> <br><br>
                 <input type="text" name="status" placeholder="Estatus" readonly><br><br>
                 <input type="text" name="fullname" placeholder="Nombre Completo" readonly value="${fullname}"> <br><br>
                 <input type="date" name="birthdate" placeholder="Fecha de Nacimiento" readonly value="${birthdate}"><br><br>
@@ -47,25 +48,18 @@ if(error != null){
             </div>
         </form>
     </div>
-    
-        <script>
-        
-                    const qrInput = document.getElementById('qrInput');
+    <script>
+        const boletaInput = document.getElementById("boletaInput");
 
-                    qrInput.addEventListener("keypress", function(event){
-                        if(event.key === "Enter"){
-                            event.preventDefault();
+        boletaInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                this.form.submit();
+            }
+        });
 
-                            this.form.submit();
-                        }
-
-                    });
-
-                    window.onload = function() {
-                        qrInput.focus();
-                    }
-
-        </script>
+        window.onload = () => boletaInput.focus();
+    </script>
 
 </body>
 </html>

@@ -10,16 +10,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Inicio de sesion</title>
 </head>
 <body>
     <div>
         <form action="SvLogin" method="POST">
             <div>
-                <h1>I N I C I O</h1>
-                <h1>D E</h1>
-                <h1>S E S I O N</h1>
-                <p>Sistema de Autenticacion</p> <br><br>
+                 <h1><---------A C C E S C O M---------></h1>
+                  <h2>Inicio de sesion</h2>
                 <input type="username" name="username" placeholder="Nombre de usuario"> <br><br>
                 <input type="password" name="password" placeholder="Contraseña"> <br><br>
                 <button type="submit">Entrar</button>

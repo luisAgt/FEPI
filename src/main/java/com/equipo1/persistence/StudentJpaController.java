@@ -5,6 +5,7 @@
 package com.equipo1.persistence;
 
 import com.equipo1.entities.Student;   // Cambia Student por la clase real
+import com.equipo1.entities.System_user;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,17 +24,28 @@ public class StudentJpaController {    // Cambia Student por el nombre real
         return emf.createEntityManager();
     }
 
-    public void create(Student entidad) throws Exception {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            em.persist(entidad);
-            em.getTransaction().commit();
-        } finally {
-            if (em != null) em.close();
+public void create(Student entidad) throws Exception {
+    EntityManager em = null;
+    try {
+        em = getEntityManager();
+        em.getTransaction().begin();
+        
+        // ✅ Re-attachar el System_user en ESTA sesión antes de persistir
+        System_user managedUser = em.find(System_user.class, entidad.getSystemuser().getIdUser());
+        entidad.setSystemuser(managedUser);
+        
+        em.persist(entidad); // ✅ ahora persist funciona porque systemuser es managed
+        em.flush();
+        em.getTransaction().commit();
+    } catch(Exception e) {
+        if (em != null && em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
         }
+        throw e;
+    } finally {
+        if (em != null) em.close();
     }
+}
 
     public void edit(Student entidad) throws Exception {
         EntityManager em = null;

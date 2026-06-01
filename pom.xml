@@ -57,12 +57,12 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.13.1</version>
-            <type>jar</type>
+            <version>1.17.2</version>
         </dependency>
     </dependencies>
     
     <build>
+        <finalName>Accescom</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

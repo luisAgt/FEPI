@@ -114,33 +114,38 @@ public class Controller {
         persistence.createAccess(acc);
     }
     
-    public void registerStudent(CredentialData data) throws Exception{
-        System_user user = new System_user();
-        LocalDate birth = parseBirth(data.getCurp());
-        
-        Student existing = persistence.findStudentByBoleta(data.getBoleta());
-        
-        if (existing != null){
-            return;
-        }
-        
-        user.setFullName(data.getFullName());
-        user.setUsername(data.getBoleta());
-        user.setPassword(data.getBoleta());
-        user.setRole("STUDENT");
-        user.setEmail("");
-        user.setBirthdate(Date.valueOf(birth));
-                
-        persistence.createUser(user);
-        
-        Student student = new Student();
-        student.setIdStudent(user.getIdUser());
-        student.setBoletaSt(data.getBoleta());
-        student.setCarrer(data.getCarrer());
-        student.setStatus("ACTIVE");
-                
-        persistence.createStudent(student);
+   public Student registerStudent(CredentialData data) throws Exception {
+    
+    Student existing = persistence.findStudentByBoleta(data.getBoleta());
+    if (existing != null) {
+        return existing;
     }
+    
+    System_user user = new System_user();
+    LocalDate birth = parseBirth(data.getCurp());
+    
+    user.setFullName(data.getFullName());
+    user.setUsername(data.getBoleta());
+    user.setPassword(data.getBoleta());
+    user.setRole("STUDENT");
+    user.setEmail("");
+    user.setBirthdate(Date.valueOf(birth));
+    
+    System_user newUser = persistence.createUser(user);
+    
+    // Debug — confirmar que el ID llegó
+    System.out.println("=== newUser.getIdUser() = " + newUser.getIdUser() + " ===");
+    
+    Student student = new Student();
+    student.setBoletaSt(data.getBoleta());
+    student.setCarrer(data.getCarrer());
+    student.setStatus("ACTIVE");
+    student.setIdStudent(newUser.getIdUser()); // ✅ ID explícito para merge
+    student.setSystemuser(newUser);            // ✅ mismo objeto, no uno nuevo
+    
+    persistence.createStudent(student);
+    return student;
+}
     
     public LocalDate parseBirth(String curp) throws Exception{
         

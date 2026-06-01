@@ -11,7 +11,12 @@ import com.equipo1.logic.Controller;
 import com.equipo1.services.DAEExtractor;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvSchoolAccess", urlPatterns = {"/SvSchoolAccess"})
-public class SvSchoolAccess extends HttpServlet {
+@WebServlet(name = "SvRegister", urlPatterns = {"/SvRegister"})
+public class SvRegister extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -65,7 +70,7 @@ public class SvSchoolAccess extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
-        request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
+        request.getRequestDispatcher("Register.jsp").forward(request, response);
     }
 
     /**
@@ -77,48 +82,73 @@ public class SvSchoolAccess extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+   protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
         try{
-           String boleta = request.getParameter("boleta");
+            
+//            deshabilitarSSL();
+            javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession)->true);
+           String url = request.getParameter("qr");
            
+           url = url.replace(".ipn.mvcred", ".ipn.mx/vcred");
+           
+           DAEExtractor extractor = new DAEExtractor();
+           CredentialData data = extractor.extractData(url);
            Controller controller = new Controller();
-           Student student = controller.findStudentByBoleta(boleta);
            
-           if(student == null){
-               request.setAttribute("error", "Estudiante no encontrado");
-               request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
+           
+           Student existing = controller.findStudentByBoleta(data.getBoleta());
+           
+           if(existing != null){
+               request.setAttribute("error", "Usuario ya existente");
+               request.getRequestDispatcher("Register.jsp").forward(request, response);
                return;
            }
-            System_user user = student.getSystemuser();
-            
-            LocalDateTime date_a = LocalDateTime.now();
-            String access = controller.determineAccessType(user.getIdUser());
-            int gate = 1;
-            
-            controller.createAccess(user.getIdUser(), date_a, access, gate);
-            
+           
+           Student student = controller.registerStudent(data);
+           System_user user = student.getSystemuser();
+           
+                      
             request.setAttribute("carrer", student.getCarrer());
             request.setAttribute("fullname", user.getFullName());
             request.setAttribute("email", user.getEmail());
             request.setAttribute("status", student.getStatus());
-            request.setAttribute("access", access);
-            request.setAttribute("date_a", date_a);
             request.setAttribute("birthdate", user.getBirthdate());
-            request.setAttribute("gate", gate);
             
-            request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
-        }catch(Exception e){
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
+        }catch(Exception e){            
+            System.out.println("El error es:");
+            System.out.println("=== ERROR DETALLADO ===");
+            System.out.println("Mensaje: " + e.getMessage());
             e.printStackTrace();
-            
-            request.setAttribute("error", "No se pudo procesar");
-            
-            request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
+            System.out.println("Causa raíz: " + e.getCause());
+            System.out.println("======================");
+            request.setAttribute("error", "No se pudo procesar: " + e.getMessage()); // muestra el msg real
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
             
             
         }
     }
+
+// Método auxiliar
+//private void deshabilitarSSL() throws Exception {
+//    TrustManager[] trustAllCerts = new TrustManager[]{
+//        new X509TrustManager() {
+//            @Override
+//            public X509Certificate[] getAcceptedIssuers() { return null; }
+//            @Override
+//            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+//            @Override
+//            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+//        }
+//    };
+//
+//    SSLContext sc = SSLContext.getInstance("SSL");
+//    sc.init(null, trustAllCerts, new java.security.SecureRandom());
+//    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+//    HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+//}
 
     /**
      * Returns a short description of the servlet.
