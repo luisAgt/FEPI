@@ -15,21 +15,26 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@Table(name = "lab_material")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Lab_material.findAll", query = "SELECT l FROM Lab_material l"),
-    @NamedQuery(name = "Lab_material.findByIdLabMaterial", query = "SELECT l FROM Lab_material l WHERE l.idLabMaterial = :idLabMaterial"),
-    @NamedQuery(name = "Lab_material.findByMaterialName", query = "SELECT l FROM Lab_material l WHERE l.materialName = :materialName"),
-    @NamedQuery(name = "Lab_material.findByDescription", query = "SELECT l FROM Lab_material l WHERE l.description = :description"),
-    @NamedQuery(name = "Lab_material.findByStock", query = "SELECT l FROM Lab_material l WHERE l.stock = :stock"),
-    @NamedQuery(name = "Lab_material.findByStatus", query = "SELECT l FROM Lab_material l WHERE l.status = :status")})
-public class Lab_material implements Serializable {
+    @NamedQuery(name = "LabMaterial.findAll", query = "SELECT l FROM LabMaterial l"),
+    @NamedQuery(name = "LabMaterial.findByIdLabMaterial", query = "SELECT l FROM LabMaterial l WHERE l.idLabMaterial = :idLabMaterial"),
+    @NamedQuery(name = "LabMaterial.findByMaterialName", query = "SELECT l FROM LabMaterial l WHERE l.materialName = :materialName"),
+    @NamedQuery(name = "LabMaterial.findByDescription", query = "SELECT l FROM LabMaterial l WHERE l.description = :description"),
+    @NamedQuery(name = "LabMaterial.findByStock", query = "SELECT l FROM LabMaterial l WHERE l.stock = :stock"),
+    @NamedQuery(name = "LabMaterial.findByStatus", query = "SELECT l FROM LabMaterial l WHERE l.status = :status")})
+public class LabMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,21 +42,21 @@ public class Lab_material implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_lab_material")
     private Integer idLabMaterial;
-    @Size(max = 45)
+    @Size(max = 255)
     @Column(name = "material_name")
     private String materialName;
-    @Size(max = 45)
+    @Size(max = 255)
     private String description;
     private Integer stock;
     @Size(max = 45)
     private String status;
     @OneToMany(mappedBy = "idLabMaterial")
-    private Collection<Loan_material> loanmaterialCollection;
+    private Collection<LoanMaterial> loanMaterialCollection;
 
-    public Lab_material() {
+    public LabMaterial() {
     }
 
-    public Lab_material(Integer idLabMaterial) {
+    public LabMaterial(Integer idLabMaterial) {
         this.idLabMaterial = idLabMaterial;
     }
 
@@ -95,12 +100,13 @@ public class Lab_material implements Serializable {
         this.status = status;
     }
 
-    public Collection<Loan_material> getLoanmaterialCollection() {
-        return loanmaterialCollection;
+    @XmlTransient
+    public Collection<LoanMaterial> getLoanMaterialCollection() {
+        return loanMaterialCollection;
     }
 
-    public void setLoanmaterialCollection(Collection<Loan_material> loanmaterialCollection) {
-        this.loanmaterialCollection = loanmaterialCollection;
+    public void setLoanMaterialCollection(Collection<LoanMaterial> loanMaterialCollection) {
+        this.loanMaterialCollection = loanMaterialCollection;
     }
 
     @Override
@@ -113,10 +119,10 @@ public class Lab_material implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Lab_material)) {
+        if (!(object instanceof LabMaterial)) {
             return false;
         }
-        Lab_material other = (Lab_material) object;
+        LabMaterial other = (LabMaterial) object;
         if ((this.idLabMaterial == null && other.idLabMaterial != null) || (this.idLabMaterial != null && !this.idLabMaterial.equals(other.idLabMaterial))) {
             return false;
         }
@@ -125,7 +131,7 @@ public class Lab_material implements Serializable {
 
     @Override
     public String toString() {
-        return "com.equipo1.entities.Lab_material[ idLabMaterial=" + idLabMaterial + " ]";
+        return "com.equipo1.entities.LabMaterial[ idLabMaterial=" + idLabMaterial + " ]";
     }
     
 }

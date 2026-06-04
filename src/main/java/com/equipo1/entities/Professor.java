@@ -5,44 +5,47 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Professor.findAll", query = "SELECT p FROM Professor p"),
     @NamedQuery(name = "Professor.findByIdProfessor", query = "SELECT p FROM Professor p WHERE p.idProfessor = :idProfessor"),
-    @NamedQuery(name = "Professor.findByBoletaPr", query = "SELECT p FROM Professor p WHERE p.boletaPr = :boletaPr"),
-    @NamedQuery(name = "Professor.findByIdDepartment", query = "SELECT p FROM Professor p WHERE p.idDepartment = :idDepartment")})
+    @NamedQuery(name = "Professor.findByBoletaPr", query = "SELECT p FROM Professor p WHERE p.boletaPr = :boletaPr")})
 public class Professor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "id_professor")
     private Integer idProfessor;
-    @Size(max = 45)
+    @Size(max = 10)
     @Column(name = "boleta_pr")
     private String boletaPr;
-    @Column(name = "id_department")
-    private Integer idDepartment;
+    @OneToMany(mappedBy = "idProfessor")
+    private Collection<Schedule> scheduleCollection;
     @JoinColumn(name = "id_professor", referencedColumnName = "id_user", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private System_user systemuser;
+    private Users users;
 
     public Professor() {
     }
@@ -67,20 +70,21 @@ public class Professor implements Serializable {
         this.boletaPr = boletaPr;
     }
 
-    public Integer getIdDepartment() {
-        return idDepartment;
+    @XmlTransient
+    public Collection<Schedule> getScheduleCollection() {
+        return scheduleCollection;
     }
 
-    public void setIdDepartment(Integer idDepartment) {
-        this.idDepartment = idDepartment;
+    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
+        this.scheduleCollection = scheduleCollection;
     }
 
-    public System_user getSystemuser() {
-        return systemuser;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setSystemuser(System_user systemuser) {
-        this.systemuser = systemuser;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     @Override

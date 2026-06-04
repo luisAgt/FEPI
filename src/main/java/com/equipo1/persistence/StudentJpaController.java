@@ -4,48 +4,44 @@
  */
 package com.equipo1.persistence;
 
-import com.equipo1.entities.Student;   // Cambia Student por la clase real
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Student;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
-import javax.persistence.NoResultException;
 
 /**
  *
  * @author XPxTBxLLX
  */
-public class StudentJpaController {    // Cambia Student por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
+public class StudentJpaController {
+    // Cambia Student por el nombre real
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-public void create(Student entidad) throws Exception {
-    EntityManager em = null;
-    try {
-        em = getEntityManager();
-        em.getTransaction().begin();
-        
-        // ✅ Re-attachar el System_user en ESTA sesión antes de persistir
-        System_user managedUser = em.find(System_user.class, entidad.getSystemuser().getIdUser());
-        entidad.setSystemuser(managedUser);
-        
-        em.persist(entidad); // ✅ ahora persist funciona porque systemuser es managed
-        em.flush();
-        em.getTransaction().commit();
-    } catch(Exception e) {
-        if (em != null && em.getTransaction().isActive()) {
-            em.getTransaction().rollback();
+    public Student create(Student entidad) throws Exception {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(entidad);
+            em.flush();
+            em.getTransaction().commit();
+            return entidad;
+        }catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } 
+        finally {
+            if (em != null) em.close();
         }
-        throw e;
-    } finally {
-        if (em != null) em.close();
     }
-}
 
     public void edit(Student entidad) throws Exception {
         EntityManager em = null;
@@ -80,19 +76,6 @@ public void create(Student entidad) throws Exception {
             em.close();
         }
     }
-    
-    public Student findStudentByBoleta(String boleta){
-        EntityManager em = getEntityManager();
-
-        try{
-            return em.createNamedQuery("Student.findByBoletaSt", Student.class).setParameter("boletaSt", boleta).getSingleResult();
-        }   catch(NoResultException e){
-            return null;
-        }   finally{
-            em.close();
-        }
-        
-    }
 
     public List<Student> findStudentEntities() {
         return findStudentEntities(true, -1, -1);
@@ -125,5 +108,19 @@ public void create(Student entidad) throws Exception {
         } finally {
             em.close();
         }
+    }
+
+    Student findStudentById(Integer idUser) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.find(Student.class, idUser);
+        }finally{
+            em.close();
+        }
+    }    
+
+    Student findStudentByBoleta(String boleta) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

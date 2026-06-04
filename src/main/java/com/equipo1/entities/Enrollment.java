@@ -17,12 +17,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Enrollment.findAll", query = "SELECT e FROM Enrollment e"),
     @NamedQuery(name = "Enrollment.findByIdEnrollment", query = "SELECT e FROM Enrollment e WHERE e.idEnrollment = :idEnrollment")})
@@ -34,14 +37,14 @@ public class Enrollment implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_enrollment")
     private Integer idEnrollment;
-    @OneToMany(mappedBy = "idEnrollment")
-    private Collection<Attendance> attendanceCollection;
     @JoinColumn(name = "id_schedule", referencedColumnName = "id_Schedule")
     @ManyToOne
     private Schedule idSchedule;
     @JoinColumn(name = "id_student", referencedColumnName = "id_student")
     @ManyToOne
     private Student idStudent;
+    @OneToMany(mappedBy = "idEnrollment")
+    private Collection<Attendance> attendanceCollection;
 
     public Enrollment() {
     }
@@ -58,14 +61,6 @@ public class Enrollment implements Serializable {
         this.idEnrollment = idEnrollment;
     }
 
-    public Collection<Attendance> getAttendanceCollection() {
-        return attendanceCollection;
-    }
-
-    public void setAttendanceCollection(Collection<Attendance> attendanceCollection) {
-        this.attendanceCollection = attendanceCollection;
-    }
-
     public Schedule getIdSchedule() {
         return idSchedule;
     }
@@ -80,6 +75,15 @@ public class Enrollment implements Serializable {
 
     public void setIdStudent(Student idStudent) {
         this.idStudent = idStudent;
+    }
+
+    @XmlTransient
+    public Collection<Attendance> getAttendanceCollection() {
+        return attendanceCollection;
+    }
+
+    public void setAttendanceCollection(Collection<Attendance> attendanceCollection) {
+        this.attendanceCollection = attendanceCollection;
     }
 
     @Override

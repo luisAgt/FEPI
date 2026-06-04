@@ -4,37 +4,45 @@
  */
 package com.equipo1.persistence;
 
-import com.equipo1.entities.Loan_material;   // Cambia Loan_material por la clase real
+import com.equipo1.entities.LoanMaterial;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
-
 /**
  *
  * @author XPxTBxLLX
  */
-public class Loan_materialJpaController {    // Cambia Loan_material por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
+public class LoanMaterialJpaController {
+
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Loan_material entidad) throws Exception {
+    public LoanMaterial create(LoanMaterial entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(entidad);
+            em.flush();
             em.getTransaction().commit();
-        } finally {
+            return entidad;
+        }catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } 
+        finally {
             if (em != null) em.close();
         }
     }
 
-    public void edit(Loan_material entidad) throws Exception {
+    public void edit(LoanMaterial entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -51,7 +59,7 @@ public class Loan_materialJpaController {    // Cambia Loan_material por el nomb
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Loan_material entidad = em.find(Loan_material.class, id);
+            LoanMaterial entidad = em.find(LoanMaterial.class, id);
             if (entidad != null) em.remove(entidad);
             em.getTransaction().commit();
         } finally {
@@ -59,27 +67,27 @@ public class Loan_materialJpaController {    // Cambia Loan_material por el nomb
         }
     }
 
-    public Loan_material findLoan_material(Object id) {
+    public LoanMaterial findLoanMaterial(Object id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Loan_material.class, id);
+            return em.find(LoanMaterial.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Loan_material> findLoan_materialEntities() {
-        return findLoan_materialEntities(true, -1, -1);
+    public List<LoanMaterial> findLoanMaterialEntities() {
+        return findLoanMaterialEntities(true, -1, -1);
     }
 
-    public List<Loan_material> findLoan_materialEntities(int maxResults, int firstResult) {
-        return findLoan_materialEntities(false, maxResults, firstResult);
+    public List<LoanMaterial> findLoanMaterialEntities(int maxResults, int firstResult) {
+        return findLoanMaterialEntities(false, maxResults, firstResult);
     }
 
-    private List<Loan_material> findLoan_materialEntities(boolean all, int maxResults, int firstResult) {
+    private List<LoanMaterial> findLoanMaterialEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Loan_material.class.getSimpleName();
+            String simpleName = LoanMaterial.class.getSimpleName();
             Query q = em.createQuery("SELECT e FROM " + simpleName + " e");
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -91,13 +99,23 @@ public class Loan_materialJpaController {    // Cambia Loan_material por el nomb
         }
     }
 
-    public int getLoan_materialCount() {
+    public int getLoanMaterialCount() {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Loan_material.class.getSimpleName();
+            String simpleName = LoanMaterial.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
             em.close();
         }
     }
+
+    LoanMaterial findLoanMaterialById(Integer idUser) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.find(LoanMaterial.class, idUser);
+        }finally{
+            em.close();
+        }
+    }    
 }

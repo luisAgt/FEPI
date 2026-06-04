@@ -15,12 +15,11 @@ import java.util.List;
  *
  * @author XPxTBxLLX
  */
-public class SubjectJpaController {    // Cambia Subject por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
-
+public class SubjectJpaController {
+        private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
+}
 
     public void create(Subject entidad) throws Exception {
         EntityManager em = null;

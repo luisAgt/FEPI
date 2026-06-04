@@ -4,7 +4,7 @@
  */
 package com.equipo1.servlets;
 
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Users;
 import com.equipo1.logic.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -89,7 +89,7 @@ public class SvLogin extends HttpServlet {
         String pass = request.getParameter("password");
         
         Controller controller = new Controller();
-        System_user user = controller.ValidateUser(uname, pass);
+        Users user = controller.ValidateUser(uname, pass);
                 
         if(user == null){
             response.sendRedirect("Login.jsp?error=Credentials");

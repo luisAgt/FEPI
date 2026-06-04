@@ -16,29 +16,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@Table(name = "loan_book")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Loan_material.findAll", query = "SELECT l FROM Loan_material l"),
-    @NamedQuery(name = "Loan_material.findByIdLoanMaterial", query = "SELECT l FROM Loan_material l WHERE l.idLoanMaterial = :idLoanMaterial"),
-    @NamedQuery(name = "Loan_material.findByLoanDate", query = "SELECT l FROM Loan_material l WHERE l.loanDate = :loanDate"),
-    @NamedQuery(name = "Loan_material.findByReturnDate", query = "SELECT l FROM Loan_material l WHERE l.returnDate = :returnDate"),
-    @NamedQuery(name = "Loan_material.findByStatus", query = "SELECT l FROM Loan_material l WHERE l.status = :status")})
-public class Loan_material implements Serializable {
+    @NamedQuery(name = "LoanBook.findAll", query = "SELECT l FROM LoanBook l"),
+    @NamedQuery(name = "LoanBook.findByIdLoanBook", query = "SELECT l FROM LoanBook l WHERE l.idLoanBook = :idLoanBook"),
+    @NamedQuery(name = "LoanBook.findByLoanDate", query = "SELECT l FROM LoanBook l WHERE l.loanDate = :loanDate"),
+    @NamedQuery(name = "LoanBook.findByReturnDate", query = "SELECT l FROM LoanBook l WHERE l.returnDate = :returnDate"),
+    @NamedQuery(name = "LoanBook.findByStatus", query = "SELECT l FROM LoanBook l WHERE l.status = :status")})
+public class LoanBook implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_loan_material")
-    private Integer idLoanMaterial;
+    @Column(name = "id_loan_book")
+    private Integer idLoanBook;
     @Column(name = "loan_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date loanDate;
@@ -47,26 +51,26 @@ public class Loan_material implements Serializable {
     private Date returnDate;
     @Size(max = 45)
     private String status;
-    @JoinColumn(name = "id_lab_material", referencedColumnName = "id_lab_material")
+    @JoinColumn(name = "id_book", referencedColumnName = "id_book")
     @ManyToOne
-    private Lab_material idLabMaterial;
+    private Book idBook;
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     @ManyToOne
-    private System_user idUser;
+    private Users idUser;
 
-    public Loan_material() {
+    public LoanBook() {
     }
 
-    public Loan_material(Integer idLoanMaterial) {
-        this.idLoanMaterial = idLoanMaterial;
+    public LoanBook(Integer idLoanBook) {
+        this.idLoanBook = idLoanBook;
     }
 
-    public Integer getIdLoanMaterial() {
-        return idLoanMaterial;
+    public Integer getIdLoanBook() {
+        return idLoanBook;
     }
 
-    public void setIdLoanMaterial(Integer idLoanMaterial) {
-        this.idLoanMaterial = idLoanMaterial;
+    public void setIdLoanBook(Integer idLoanBook) {
+        this.idLoanBook = idLoanBook;
     }
 
     public Date getLoanDate() {
@@ -93,37 +97,37 @@ public class Loan_material implements Serializable {
         this.status = status;
     }
 
-    public Lab_material getIdLabMaterial() {
-        return idLabMaterial;
+    public Book getIdBook() {
+        return idBook;
     }
 
-    public void setIdLabMaterial(Lab_material idLabMaterial) {
-        this.idLabMaterial = idLabMaterial;
+    public void setIdBook(Book idBook) {
+        this.idBook = idBook;
     }
 
-    public System_user getIdUser() {
+    public Users getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(System_user idUser) {
+    public void setIdUser(Users idUser) {
         this.idUser = idUser;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idLoanMaterial != null ? idLoanMaterial.hashCode() : 0);
+        hash += (idLoanBook != null ? idLoanBook.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Loan_material)) {
+        if (!(object instanceof LoanBook)) {
             return false;
         }
-        Loan_material other = (Loan_material) object;
-        if ((this.idLoanMaterial == null && other.idLoanMaterial != null) || (this.idLoanMaterial != null && !this.idLoanMaterial.equals(other.idLoanMaterial))) {
+        LoanBook other = (LoanBook) object;
+        if ((this.idLoanBook == null && other.idLoanBook != null) || (this.idLoanBook != null && !this.idLoanBook.equals(other.idLoanBook))) {
             return false;
         }
         return true;
@@ -131,7 +135,7 @@ public class Loan_material implements Serializable {
 
     @Override
     public String toString() {
-        return "com.equipo1.entities.Loan_material[ idLoanMaterial=" + idLoanMaterial + " ]";
+        return "com.equipo1.entities.LoanBook[ idLoanBook=" + idLoanBook + " ]";
     }
     
 }

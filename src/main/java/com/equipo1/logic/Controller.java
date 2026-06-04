@@ -5,13 +5,13 @@
 package com.equipo1.logic;
 
 import com.equipo1.dto.CredentialData;
-import com.equipo1.entities.Access_school;
+import com.equipo1.entities.AccessSchool;
 import com.equipo1.entities.Book;
-import com.equipo1.entities.Lab_material;
-import com.equipo1.entities.Loan_book;
-import com.equipo1.entities.Loan_material;
+import com.equipo1.entities.LabMaterial;
+import com.equipo1.entities.LoanBook;
+import com.equipo1.entities.LoanMaterial;
 import com.equipo1.entities.Student;
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Users;
 import com.equipo1.persistence.PersistenceController;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -24,14 +24,14 @@ import java.util.List;
  */
 public class Controller {
     PersistenceController persistence = new PersistenceController();
-    public System_user ValidateUser(String uname, String pass) {
+    public Users ValidateUser(String uname, String pass) {
             return persistence.ValidateUser(uname, pass);
         }
 
     public  void createLoanBook(int idBook, int idUser, LocalDateTime loanDate, LocalDate returnDate, String status) throws Exception {
-        Loan_book loan = new Loan_book();    
+        LoanBook loan = new LoanBook();    
         Book book = persistence.findBook(idBook);
-        System_user  user = persistence.findUser(idUser);
+        Users  user = persistence.findUser(idUser);
 
         if(book == null){
             throw new Exception("Libro no encontrado");
@@ -64,9 +64,9 @@ public class Controller {
     }
 
     public void createLoanMaterial(int idMaterial, int idUser, LocalDateTime loanDate, LocalDate returnDate, String status) throws Exception {
-        Loan_material loan = new Loan_material();    
-        Lab_material material = persistence.findMaterial(idMaterial);
-        System_user  user = persistence.findUser(idUser);
+        LoanMaterial loan = new LoanMaterial();    
+        LabMaterial material = persistence.findMaterial(idMaterial);
+        Users  user = persistence.findUser(idUser);
 
         if(material == null){
             throw new Exception("Material no encontrado");
@@ -94,13 +94,13 @@ public class Controller {
         persistence.createLoanMaterial(loan);
     }
 
-    public List<Lab_material> getAvailableMaterials() {
+    public List<LabMaterial> getAvailableMaterials() {
     return persistence.getAvailableMaterials();
 }    
 
     public void createAccess(int id_user, LocalDateTime date_a, String access, int gate) throws Exception {
-        System_user user = persistence.findUser(id_user);
-        Access_school acc= new Access_school(); 
+        Users user = persistence.findUser(id_user);
+        AccessSchool acc= new AccessSchool(); 
         
         if(user == null){
                 throw new Exception("Usuario no encontrado");
@@ -121,17 +121,17 @@ public class Controller {
         return existing;
     }
     
-    System_user user = new System_user();
+    Users user = new Users();
     LocalDate birth = parseBirth(data.getCurp());
     
-    user.setFullName(data.getFullName());
+    user.setFullname(data.getFullName());
     user.setUsername(data.getBoleta());
     user.setPassword(data.getBoleta());
     user.setRole("STUDENT");
     user.setEmail("");
     user.setBirthdate(Date.valueOf(birth));
     
-    System_user newUser = persistence.createUser(user);
+    Users newUser = persistence.createUser(user);
     
     // Debug — confirmar que el ID llegó
     System.out.println("=== newUser.getIdUser() = " + newUser.getIdUser() + " ===");
@@ -141,7 +141,7 @@ public class Controller {
     student.setCarrer(data.getCarrer());
     student.setStatus("ACTIVE");
     student.setIdStudent(newUser.getIdUser()); // ✅ ID explícito para merge
-    student.setSystemuser(newUser);            // ✅ mismo objeto, no uno nuevo
+    student.setUsers(newUser);            // ✅ mismo objeto, no uno nuevo
     
     persistence.createStudent(student);
     return student;
@@ -173,7 +173,7 @@ public class Controller {
     }
     
     public String determineAccessType(int id){
-        Access_school last = persistence.findLastAccessByUser(id);
+        AccessSchool last = persistence.findLastAccessByUser(id);
         
         if (last == null){
             return "ENTRY";

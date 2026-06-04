@@ -4,37 +4,45 @@
  */
 package com.equipo1.persistence;
 
-import com.equipo1.entities.Lab_material;   // Cambia Lab_material por la clase real
+import com.equipo1.entities.Users;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
 
 /**
  *
  * @author XPxTBxLLX
  */
-public class Lab_materialJpaController {    // Cambia Lab_material por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
+public class UsersJpaController {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Lab_material entidad) throws Exception {
+    public Users create(Users entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(entidad);
+            em.flush();
             em.getTransaction().commit();
-        } finally {
+            return entidad;
+        }catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } 
+        finally {
             if (em != null) em.close();
         }
     }
 
-    public void edit(Lab_material entidad) throws Exception {
+    public void edit(Users entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -51,7 +59,7 @@ public class Lab_materialJpaController {    // Cambia Lab_material por el nombre
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Lab_material entidad = em.find(Lab_material.class, id);
+            Users entidad = em.find(Users.class, id);
             if (entidad != null) em.remove(entidad);
             em.getTransaction().commit();
         } finally {
@@ -59,27 +67,27 @@ public class Lab_materialJpaController {    // Cambia Lab_material por el nombre
         }
     }
 
-    public Lab_material findLab_material(Object id) {
+    public Users findUsers(Object id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Lab_material.class, id);
+            return em.find(Users.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Lab_material> findLab_materialEntities() {
-        return findLab_materialEntities(true, -1, -1);
+    public List<Users> findUsersEntities() {
+        return findUsersEntities(true, -1, -1);
     }
 
-    public List<Lab_material> findLab_materialEntities(int maxResults, int firstResult) {
-        return findLab_materialEntities(false, maxResults, firstResult);
+    public List<Users> findUsersEntities(int maxResults, int firstResult) {
+        return findUsersEntities(false, maxResults, firstResult);
     }
 
-    private List<Lab_material> findLab_materialEntities(boolean all, int maxResults, int firstResult) {
+    private List<Users> findUsersEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Lab_material.class.getSimpleName();
+            String simpleName = Users.class.getSimpleName();
             Query q = em.createQuery("SELECT e FROM " + simpleName + " e");
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -91,14 +99,23 @@ public class Lab_materialJpaController {    // Cambia Lab_material por el nombre
         }
     }
 
-    public int getLab_materialCount() {
+    public int getUsersCount() {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Lab_material.class.getSimpleName();
+            String simpleName = Users.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
             em.close();
         }
     }
-}
 
+    Users findUsersById(Integer idUser) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.find(Users.class, idUser);
+        }finally{
+            em.close();
+        }
+    }    
+}

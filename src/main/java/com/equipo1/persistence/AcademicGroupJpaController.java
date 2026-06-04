@@ -4,25 +4,25 @@
  */
 package com.equipo1.persistence;
 
-import com.equipo1.entities.System_user;   // Cambia System_user por la clase real
+import com.equipo1.entities.AcademicGroup;
+import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
-
 /**
  *
  * @author XPxTBxLLX
  */
-public class System_userJpaController {    // Cambia System_user por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
+public class AcademicGroupJpaController implements Serializable {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public System_user create(System_user entidad) throws Exception {
+    public AcademicGroup create(AcademicGroup entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -42,7 +42,7 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
         }
     }
 
-    public void edit(System_user entidad) throws Exception {
+    public void edit(AcademicGroup entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -59,7 +59,7 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            System_user entidad = em.find(System_user.class, id);
+            AcademicGroup entidad = em.find(AcademicGroup.class, id);
             if (entidad != null) em.remove(entidad);
             em.getTransaction().commit();
         } finally {
@@ -67,27 +67,27 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
         }
     }
 
-    public System_user findSystem_user(Object id) {
+    public AcademicGroup findAcademicGroup(Object id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(System_user.class, id);
+            return em.find(AcademicGroup.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<System_user> findSystem_userEntities() {
-        return findSystem_userEntities(true, -1, -1);
+    public List<AcademicGroup> findAcademicGroupEntities() {
+        return findAcademicGroupEntities(true, -1, -1);
     }
 
-    public List<System_user> findSystem_userEntities(int maxResults, int firstResult) {
-        return findSystem_userEntities(false, maxResults, firstResult);
+    public List<AcademicGroup> findAcademicGroupEntities(int maxResults, int firstResult) {
+        return findAcademicGroupEntities(false, maxResults, firstResult);
     }
 
-    private List<System_user> findSystem_userEntities(boolean all, int maxResults, int firstResult) {
+    private List<AcademicGroup> findAcademicGroupEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = System_user.class.getSimpleName();
+            String simpleName = AcademicGroup.class.getSimpleName();
             Query q = em.createQuery("SELECT e FROM " + simpleName + " e");
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -99,23 +99,23 @@ public class System_userJpaController {    // Cambia System_user por el nombre r
         }
     }
 
-    public int getSystem_userCount() {
+    public int getAcademicGroupCount() {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = System_user.class.getSimpleName();
+            String simpleName = AcademicGroup.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
             em.close();
         }
     }
 
-    System_user findSystem_userById(Integer idUser) {
+    AcademicGroup findAcademicGroupById(Integer idUser) {
         EntityManager em = getEntityManager();
         
         try{
-            return em.find(System_user.class, idUser);
+            return em.find(AcademicGroup.class, idUser);
         }finally{
             em.close();
         }
-    }
+    }    
 }

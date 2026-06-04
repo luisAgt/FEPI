@@ -19,12 +19,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Horary.findAll", query = "SELECT h FROM Horary h"),
     @NamedQuery(name = "Horary.findByIdHorary", query = "SELECT h FROM Horary h WHERE h.idHorary = :idHorary"),
@@ -90,6 +93,7 @@ public class Horary implements Serializable {
         this.endTime = endTime;
     }
 
+    @XmlTransient
     public Collection<Schedule> getScheduleCollection() {
         return scheduleCollection;
     }

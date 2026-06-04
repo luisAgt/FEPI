@@ -15,12 +15,12 @@ import java.util.List;
  *
  * @author XPxTBxLLX
  */
-public class BookJpaController {    // Cambia Book por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
-
+public class BookJpaController {
+        private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
+        
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
+}
 
     public void create(Book entidad) throws Exception {
         EntityManager em = null;

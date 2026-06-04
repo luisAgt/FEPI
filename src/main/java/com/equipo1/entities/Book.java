@@ -16,12 +16,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
     @NamedQuery(name = "Book.findByIdBook", query = "SELECT b FROM Book b WHERE b.idBook = :idBook"),
@@ -39,18 +42,18 @@ public class Book implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_book")
     private Integer idBook;
-    @Size(max = 45)
+    @Size(max = 255)
     private String tittle;
-    @Size(max = 45)
+    @Size(max = 255)
     private String editorial;
     private Integer edition;
-    @Size(max = 45)
+    @Size(max = 100)
     private String author;
     private Integer stock;
     @Size(max = 45)
     private String status;
     @OneToMany(mappedBy = "idBook")
-    private Collection<Loan_book> loanbookCollection;
+    private Collection<LoanBook> loanBookCollection;
 
     public Book() {
     }
@@ -115,12 +118,13 @@ public class Book implements Serializable {
         this.status = status;
     }
 
-    public Collection<Loan_book> getLoanbookCollection() {
-        return loanbookCollection;
+    @XmlTransient
+    public Collection<LoanBook> getLoanBookCollection() {
+        return loanBookCollection;
     }
 
-    public void setLoanbookCollection(Collection<Loan_book> loanbookCollection) {
-        this.loanbookCollection = loanbookCollection;
+    public void setLoanBookCollection(Collection<LoanBook> loanBookCollection) {
+        this.loanBookCollection = loanBookCollection;
     }
 
     @Override

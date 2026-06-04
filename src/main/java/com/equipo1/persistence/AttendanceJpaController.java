@@ -15,12 +15,12 @@ import java.util.List;
  *
  * @author XPxTBxLLX
  */
-public class AttendanceJpaController {    // Cambia Attendance por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
-
+public class AttendanceJpaController {
+        private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
+        
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
+}
 
     public void create(Attendance entidad) throws Exception {
         EntityManager em = null;

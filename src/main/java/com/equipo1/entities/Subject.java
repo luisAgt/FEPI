@@ -17,12 +17,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Subject.findAll", query = "SELECT s FROM Subject s"),
     @NamedQuery(name = "Subject.findByIdSubject", query = "SELECT s FROM Subject s WHERE s.idSubject = :idSubject"),
@@ -38,9 +41,9 @@ public class Subject implements Serializable {
     private Integer idSubject;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 255)
     private String name;
-    @Size(max = 45)
+    @Size(max = 255)
     private String description;
     @OneToMany(mappedBy = "idSubject")
     private Collection<Schedule> scheduleCollection;
@@ -81,6 +84,7 @@ public class Subject implements Serializable {
         this.description = description;
     }
 
+    @XmlTransient
     public Collection<Schedule> getScheduleCollection() {
         return scheduleCollection;
     }

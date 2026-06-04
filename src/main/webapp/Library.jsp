@@ -3,9 +3,9 @@
     Created on : 25 may 2026, 1:05:07 p.m.
     Author     : XPxTBxLLX
 --%>
-<%@page import="com.equipo1.entities.System_user"%>
+<%@page import="com.equipo1.entities.Users"%>
 <%
-    System_user user = (System_user) session.getAttribute("user");
+    Users user = (Users) session.getAttribute("user");
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,7 +17,7 @@
     </head>
     <body>
         <h1><---------B I B L I O T E C A ---------></h1>
-        <h2>Bienvenid@, <%=user.getFullName() %></h2>
+        <h2>Bienvenid@, <%=user.getFullname() %></h2>
         <a href="SvLoanBook">Registrar prestamo</a> <br><br>
         <a href="">Ver prestamos</a> <br><br>
         <a href="">Consultar libros</a> <br><br>

@@ -19,12 +19,14 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Attendance.findAll", query = "SELECT a FROM Attendance a"),
     @NamedQuery(name = "Attendance.findByIdAttendance", query = "SELECT a FROM Attendance a WHERE a.idAttendance = :idAttendance"),
@@ -41,14 +43,14 @@ public class Attendance implements Serializable {
     @Column(name = "check_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date checkDate;
-    @Size(max = 45)
+    @Size(max = 30)
     private String status;
     @JoinColumn(name = "id_enrollment", referencedColumnName = "id_enrollment")
     @ManyToOne
     private Enrollment idEnrollment;
-    @JoinColumn(name = "id_student", referencedColumnName = "id_student")
+    @JoinColumn(name = "boleta", referencedColumnName = "boleta_st")
     @ManyToOne
-    private Student idStudent;
+    private Student boleta;
 
     public Attendance() {
     }
@@ -89,12 +91,12 @@ public class Attendance implements Serializable {
         this.idEnrollment = idEnrollment;
     }
 
-    public Student getIdStudent() {
-        return idStudent;
+    public Student getBoleta() {
+        return boleta;
     }
 
-    public void setIdStudent(Student idStudent) {
-        this.idStudent = idStudent;
+    public void setBoleta(Student boleta) {
+        this.boleta = boleta;
     }
 
     @Override

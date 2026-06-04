@@ -5,22 +5,21 @@
 package com.equipo1.persistence;
 
 import com.equipo1.entities.Schedule;   // Cambia Schedule por la clase real
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
 
 /**
  *
  * @author XPxTBxLLX
  */
-public class ScheduleJpaController {    // Cambia Schedule por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
-
+public class ScheduleJpaController {
+        private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
+}
 
     public void create(Schedule entidad) throws Exception {
         EntityManager em = null;

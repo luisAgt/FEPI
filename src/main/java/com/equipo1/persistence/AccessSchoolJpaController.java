@@ -3,38 +3,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.equipo1.persistence;
-
-import com.equipo1.entities.Academic_Group;   // Cambia Academic_Group por la clase real
+import com.equipo1.entities.AccessSchool;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import java.util.List;
-
 /**
  *
  * @author XPxTBxLLX
  */
-public class Academic_GroupJpaController {    // Cambia Academic_Group por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
+public class AccessSchoolJpaController {
+private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Academic_Group entidad) throws Exception {
+    public AccessSchool create(AccessSchool entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(entidad);
+            em.flush();
             em.getTransaction().commit();
-        } finally {
+            return entidad;
+        }catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } 
+        finally {
             if (em != null) em.close();
         }
     }
 
-    public void edit(Academic_Group entidad) throws Exception {
+    public void edit(AccessSchool entidad) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -51,7 +57,7 @@ public class Academic_GroupJpaController {    // Cambia Academic_Group por el no
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Academic_Group entidad = em.find(Academic_Group.class, id);
+            AccessSchool entidad = em.find(AccessSchool.class, id);
             if (entidad != null) em.remove(entidad);
             em.getTransaction().commit();
         } finally {
@@ -59,27 +65,27 @@ public class Academic_GroupJpaController {    // Cambia Academic_Group por el no
         }
     }
 
-    public Academic_Group findAcademic_Group(Object id) {
+    public AccessSchool findAccessSchool(Object id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Academic_Group.class, id);
+            return em.find(AccessSchool.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Academic_Group> findAcademic_GroupEntities() {
-        return findAcademic_GroupEntities(true, -1, -1);
+    public List<AccessSchool> findAccessSchoolEntities() {
+        return findAccessSchoolEntities(true, -1, -1);
     }
 
-    public List<Academic_Group> findAcademic_GroupEntities(int maxResults, int firstResult) {
-        return findAcademic_GroupEntities(false, maxResults, firstResult);
+    public List<AccessSchool> findAccessSchoolEntities(int maxResults, int firstResult) {
+        return findAccessSchoolEntities(false, maxResults, firstResult);
     }
 
-    private List<Academic_Group> findAcademic_GroupEntities(boolean all, int maxResults, int firstResult) {
+    private List<AccessSchool> findAccessSchoolEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Academic_Group.class.getSimpleName();
+            String simpleName = AccessSchool.class.getSimpleName();
             Query q = em.createQuery("SELECT e FROM " + simpleName + " e");
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -91,13 +97,27 @@ public class Academic_GroupJpaController {    // Cambia Academic_Group por el no
         }
     }
 
-    public int getAcademic_GroupCount() {
+    public int getAccessSchoolCount() {
         EntityManager em = getEntityManager();
         try {
-            String simpleName = Academic_Group.class.getSimpleName();
+            String simpleName = AccessSchool.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
             em.close();
         }
+    }
+
+    AccessSchool findAccessSchoolById(Integer idUser) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.find(AccessSchool.class, idUser);
+        }finally{
+            em.close();
+        }
+    }    
+
+    AccessSchool findLastAccessByUser(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

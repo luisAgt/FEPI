@@ -31,9 +31,9 @@
     }
 %>
 
-<%@page import="com.equipo1.entities.System_user"%>
+<%@page import="com.equipo1.entities.Users"%>
 <%
-    System_user user = (System_user) session.getAttribute("user");
+    Users user = (Users) session.getAttribute("user");
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -46,7 +46,7 @@
     </head>
     <body>
         <h1><---------P R O F E S O R E S---------></h1>
-        <h2>Bienvenid@, <%=user.getFullName() %></h2>
+        <h2>Bienvenid@, <%=user.getFullname()%></h2>
         <a href="url">Ver materias inscritas</a> <br><br>
         <a href="url">Ver asistencias</a> <br><br>
         <a href="url">Modificar datos personales</a> <br><br>

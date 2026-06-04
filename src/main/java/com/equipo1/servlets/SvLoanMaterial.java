@@ -5,7 +5,7 @@
 package com.equipo1.servlets;
 
 import com.equipo1.logic.Controller;
-import com.equipo1.entities.Lab_material;
+import com.equipo1.entities.LabMaterial;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -66,7 +66,7 @@ public class SvLoanMaterial extends HttpServlet {
         
         Controller controller = new Controller();
         
-        List<Lab_material> materials = controller.getAvailableMaterials();
+        List<LabMaterial> materials = controller.getAvailableMaterials();
         System.out.println("Materiales: " + materials.size());
         request.setAttribute("materials", materials);        
         request.getRequestDispatcher("/LoanMaterial.jsp").forward(request, response);

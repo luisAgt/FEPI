@@ -17,12 +17,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s"),
     @NamedQuery(name = "Schedule.findByIdSchedule", query = "SELECT s FROM Schedule s WHERE s.idSchedule = :idSchedule")})
@@ -34,9 +37,11 @@ public class Schedule implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_Schedule")
     private Integer idSchedule;
+    @OneToMany(mappedBy = "idSchedule")
+    private Collection<Enrollment> enrollmentCollection;
     @JoinColumn(name = "id_group", referencedColumnName = "id_group")
     @ManyToOne
-    private Academic_Group idGroup;
+    private AcademicGroup idGroup;
     @JoinColumn(name = "id_classroom", referencedColumnName = "id_classroom")
     @ManyToOne
     private Classroom idClassroom;
@@ -49,8 +54,6 @@ public class Schedule implements Serializable {
     @JoinColumn(name = "id_subject", referencedColumnName = "id_subject")
     @ManyToOne
     private Subject idSubject;
-    @OneToMany(mappedBy = "idSchedule")
-    private Collection<Enrollment> enrollmentCollection;
 
     public Schedule() {
     }
@@ -67,11 +70,20 @@ public class Schedule implements Serializable {
         this.idSchedule = idSchedule;
     }
 
-    public Academic_Group getIdGroup() {
+    @XmlTransient
+    public Collection<Enrollment> getEnrollmentCollection() {
+        return enrollmentCollection;
+    }
+
+    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
+        this.enrollmentCollection = enrollmentCollection;
+    }
+
+    public AcademicGroup getIdGroup() {
         return idGroup;
     }
 
-    public void setIdGroup(Academic_Group idGroup) {
+    public void setIdGroup(AcademicGroup idGroup) {
         this.idGroup = idGroup;
     }
 
@@ -105,14 +117,6 @@ public class Schedule implements Serializable {
 
     public void setIdSubject(Subject idSubject) {
         this.idSubject = idSubject;
-    }
-
-    public Collection<Enrollment> getEnrollmentCollection() {
-        return enrollmentCollection;
-    }
-
-    public void setEnrollmentCollection(Collection<Enrollment> enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection;
     }
 
     @Override

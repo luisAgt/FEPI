@@ -4,9 +4,9 @@
     Author     : XPxTBxLLX
 --%>
 
-<%@page import="com.equipo1.entities.System_user"%>
+<%@page import="com.equipo1.entities.Users"%>
 <%
-    System_user user = (System_user) session.getAttribute("user");
+    Users user = (Users) session.getAttribute("user");
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,7 +19,7 @@
     </head>
     <body>
         <h1><---------L A B O R A T O R Y---------></h1>
-        <h2>Bienvenid@, <%=user.getFullName() %></h2>
+        <h2>Bienvenid@, <%=user.getFullname()%></h2>
         <a href="SvLogout">Registrar prestamo</a> <br><br>
         <a href="SvLogout">Ver prestamos</a> <br><br>
         <a href="SvLogout">Consultar materiales</a> <br><br>

@@ -6,7 +6,7 @@ package com.equipo1.servlets;
 
 import com.equipo1.dto.CredentialData;
 import com.equipo1.entities.Student;
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Users;
 import com.equipo1.logic.Controller;
 import com.equipo1.services.DAEExtractor;
 import java.io.IOException;
@@ -91,7 +91,7 @@ public class SvSchoolAccess extends HttpServlet {
                request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
                return;
            }
-            System_user user = student.getSystemuser();
+            Users user = student.getUsers();
             
             LocalDateTime date_a = LocalDateTime.now();
             String access = controller.determineAccessType(user.getIdUser());
@@ -100,7 +100,7 @@ public class SvSchoolAccess extends HttpServlet {
             controller.createAccess(user.getIdUser(), date_a, access, gate);
             
             request.setAttribute("carrer", student.getCarrer());
-            request.setAttribute("fullname", user.getFullName());
+            request.setAttribute("fullname", user.getFullname());
             request.setAttribute("email", user.getEmail());
             request.setAttribute("status", student.getStatus());
             request.setAttribute("access", access);

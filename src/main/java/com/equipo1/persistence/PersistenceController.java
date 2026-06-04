@@ -4,13 +4,13 @@
  */
 package com.equipo1.persistence;
 
-import com.equipo1.entities.Access_school;
+import com.equipo1.entities.AccessSchool;
 import com.equipo1.entities.Book;
-import com.equipo1.entities.Lab_material;
-import com.equipo1.entities.Loan_book;
-import com.equipo1.entities.Loan_material;
+import com.equipo1.entities.LabMaterial;
+import com.equipo1.entities.LoanBook;
+import com.equipo1.entities.LoanMaterial;
 import com.equipo1.entities.Student;
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Users;
 import java.util.List;
 
 /**
@@ -19,24 +19,24 @@ import java.util.List;
  */
 public class PersistenceController {
     
-    System_userJpaController userJPA = new System_userJpaController();
+    UsersJpaController userJPA = new UsersJpaController();
     StudentJpaController studentJPA = new StudentJpaController();
     
     BookJpaController bookJPA = new BookJpaController();
-    Loan_bookJpaController loanBJPA = new Loan_bookJpaController();
+    LoanBookJpaController loanBJPA = new LoanBookJpaController();
     
-    Lab_materialJpaController materialJPA = new Lab_materialJpaController();
-    Loan_materialJpaController loanMJPA = new Loan_materialJpaController();
+    LabMaterialJpaController materialJPA = new LabMaterialJpaController();
+    LoanMaterialJpaController loanMJPA = new LoanMaterialJpaController();
     
-    Access_schoolJpaController accessJPA = new Access_schoolJpaController();
+    AccessSchoolJpaController accessJPA = new AccessSchoolJpaController();
     
     /**
      * 
      * @param idUser
      * @return 
      **/
-    public System_user findUser(int idUser) {
-        return userJPA.findSystem_user(idUser);
+    public Users findUser(int idUser) {
+        return userJPA.findUsers(idUser);
     }
     /**/
 
@@ -46,14 +46,14 @@ public class PersistenceController {
      * @param pass
      * @return 
      */
-    public System_user ValidateUser(String uname, String pass) {
+    public Users ValidateUser(String uname, String pass) {
         
         if (uname == null || pass == null || uname.isEmpty() || pass.isEmpty()){
             return null;
         }
-        List<System_user> users = userJPA.findSystem_userEntities();
+        List<Users> users = userJPA.findUsersEntities();
         
-        for (System_user user : users){
+        for (Users user : users){
             if(user.getUsername().equals(uname) && user.getPassword().equals(pass)){
                 return user;
             }
@@ -84,7 +84,7 @@ public class PersistenceController {
      * @param loan
      * @throws java.lang.Exception
      */
-    public void createLoanBook(Loan_book loan) throws Exception{
+    public void createLoanBook(LoanBook loan) throws Exception{
         loanBJPA.create(loan);
     }
     /**
@@ -101,8 +101,8 @@ public class PersistenceController {
      * @param idMaterial
      * @return 
      **/
-    public Lab_material findMaterial(int idMaterial) {
-        return materialJPA.findLab_material(idMaterial);
+    public LabMaterial findMaterial(int idMaterial) {
+        return materialJPA.findLabMaterial(idMaterial);
     }
 
     /**
@@ -110,7 +110,7 @@ public class PersistenceController {
      * @param material
      * @throws java.lang.Exception
      */
-    public void editMaterial(Lab_material material) throws Exception {
+    public void editMaterial(LabMaterial material) throws Exception {
         materialJPA.edit(material);
     }
  
@@ -119,7 +119,7 @@ public class PersistenceController {
      * @param loan
      * @throws java.lang.Exception
      */
-    public void createLoanMaterial(Loan_material loan) throws Exception {
+    public void createLoanMaterial(LoanMaterial loan) throws Exception {
         loanMJPA.create(loan);
     }
 
@@ -127,17 +127,17 @@ public class PersistenceController {
      * /
      * @return
      */
-    public List<Lab_material> getAvailableMaterials() {
-        //List<Lab_material> materials = materialJPA.findLab_materialEntities();
-        return materialJPA.findLab_materialEntities();
+    public List<LabMaterial> getAvailableMaterials() {
+        //List<LabMaterial> materials = materialJPA.findLabMaterialEntities();
+        return materialJPA.findLabMaterialEntities();
         //return materials.stream().filter(material -> material.getStock()>0).toList();
     }
 
-    public void createAccess(Access_school acc) throws Exception {
+    public void createAccess(AccessSchool acc) throws Exception {
         accessJPA.create(acc);
     }
 
-    public System_user createUser(System_user user) throws Exception {
+    public Users createUser(Users user) throws Exception {
         return         userJPA.create(user);
     }
 
@@ -148,11 +148,11 @@ public class PersistenceController {
     public Student findStudentByBoleta(String boleta){
         return studentJPA.findStudentByBoleta(boleta);
     }
-    public Access_school findLastAccessByUser(int id){
+    public AccessSchool findLastAccessByUser(int id){
         return accessJPA.findLastAccessByUser(id);
     }
 
-    public System_user findUserById(Integer idUser) {
-        return userJPA.findSystem_userById(idUser);
+    public Users findUserById(Integer idUser) {
+        return userJPA.findUsersById(idUser);
     }
 }

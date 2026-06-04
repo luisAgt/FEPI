@@ -5,6 +5,7 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,13 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author XPxTBxLLX
  */
 @Entity
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Classroom.findAll", query = "SELECT c FROM Classroom c"),
     @NamedQuery(name = "Classroom.findByIdClassroom", query = "SELECT c FROM Classroom c WHERE c.idClassroom = :idClassroom"),
@@ -33,10 +38,12 @@ public class Classroom implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_classroom")
     private Integer idClassroom;
-    @Size(max = 2)
+    @Size(max = 5)
     private String building;
-    @Size(max = 3)
+    @Size(max = 5)
     private String classroom;
+    @OneToMany(mappedBy = "idClassroom")
+    private Collection<Schedule> scheduleCollection;
 
     public Classroom() {
     }
@@ -67,6 +74,15 @@ public class Classroom implements Serializable {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
+    }
+
+    @XmlTransient
+    public Collection<Schedule> getScheduleCollection() {
+        return scheduleCollection;
+    }
+
+    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
+        this.scheduleCollection = scheduleCollection;
     }
 
     @Override

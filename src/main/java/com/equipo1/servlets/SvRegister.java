@@ -6,7 +6,7 @@ package com.equipo1.servlets;
 
 import com.equipo1.dto.CredentialData;
 import com.equipo1.entities.Student;
-import com.equipo1.entities.System_user;
+import com.equipo1.entities.Users;
 import com.equipo1.logic.Controller;
 import com.equipo1.services.DAEExtractor;
 import java.io.IOException;
@@ -107,11 +107,11 @@ public class SvRegister extends HttpServlet {
            }
            
            Student student = controller.registerStudent(data);
-           System_user user = student.getSystemuser();
+           Users user = student.getUsers();
            
                       
             request.setAttribute("carrer", student.getCarrer());
-            request.setAttribute("fullname", user.getFullName());
+            request.setAttribute("fullname", user.getFullname());
             request.setAttribute("email", user.getEmail());
             request.setAttribute("status", student.getStatus());
             request.setAttribute("birthdate", user.getBirthdate());
@@ -130,25 +130,6 @@ public class SvRegister extends HttpServlet {
             
         }
     }
-
-// Método auxiliar
-//private void deshabilitarSSL() throws Exception {
-//    TrustManager[] trustAllCerts = new TrustManager[]{
-//        new X509TrustManager() {
-//            @Override
-//            public X509Certificate[] getAcceptedIssuers() { return null; }
-//            @Override
-//            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-//            @Override
-//            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-//        }
-//    };
-//
-//    SSLContext sc = SSLContext.getInstance("SSL");
-//    sc.init(null, trustAllCerts, new java.security.SecureRandom());
-//    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-//    HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
-//}
 
     /**
      * Returns a short description of the servlet.

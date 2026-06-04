@@ -15,12 +15,12 @@ import java.util.List;
  *
  * @author XPxTBxLLX
  */
-public class HoraryJpaController {    // Cambia Horary por el nombre real
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AssistanceSystemPU");
-
+public class HoraryJpaController {
+        private EntityManagerFactory emf = Persistence.createEntityManagerFactory("AccescomPU");
+        
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
-    }
+}
 
     public void create(Horary entidad) throws Exception {
         EntityManager em = null;
