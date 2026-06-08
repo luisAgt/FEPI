@@ -36,10 +36,7 @@ if(error != null){
             <div>
                 <input type="text" name="boleta" id="boletaInput" placeholder="Escanea tu Boleta"  value="${boleta}" autofocus autocomplete="off"> <br><br>
                 <input type="text" name="status" placeholder="Estatus" readonly><br><br>
-                <input type="text" name="fullname" placeholder="Nombre Completo" readonly value="${fullname}"> <br><br>
-                <input type="date" name="birthdate" placeholder="Fecha de Nacimiento" readonly value="${birthdate}"><br><br>
-                <input type="text" name="carrer" placeholder="Carrera" readonly value="${carrer}"><br><br>
-                <input type="text" name="email" placeholder="Correo" readonly value="${email}" ><br><br>
+                <input type="text" name="fullname" placeholder="Nombre Completo" readonly value="${fullname}"> <br><br>                
             </div>       
             <div class="">                
                 <input type="text" name="date_a" placeholder="Fecha de acceso" readonly value="${date_a}" ><br><br>

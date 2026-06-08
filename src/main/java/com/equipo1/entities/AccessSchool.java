@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
@@ -26,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author XPxTBxLLX
  */
 @Entity
+@Table(name = "access_school")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AccessSchool.findAll", query = "SELECT a FROM AccessSchool a"),

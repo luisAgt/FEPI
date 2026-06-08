@@ -19,8 +19,8 @@
             <div>
                  <h1><---------A C C E S C O M---------></h1>
                   <h2>Inicio de sesion</h2>
-                <input type="username" name="username" placeholder="Nombre de usuario"> <br><br>
-                <input type="password" name="password" placeholder="Contraseña"> <br><br>
+                <input type="username" name="username" placeholder="Nombre de usuario" autofocus> <br><br>
+                <input type="password" name="password" placeholder="Contraseña" > <br><br>
                 <button type="submit">Entrar</button>
             </div>
         </form>

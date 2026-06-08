@@ -5,7 +5,7 @@
 package com.equipo1.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,7 +28,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Subject.findAll", query = "SELECT s FROM Subject s"),
     @NamedQuery(name = "Subject.findByIdSubject", query = "SELECT s FROM Subject s WHERE s.idSubject = :idSubject"),
     @NamedQuery(name = "Subject.findByName", query = "SELECT s FROM Subject s WHERE s.name = :name"),
-    @NamedQuery(name = "Subject.findByDescription", query = "SELECT s FROM Subject s WHERE s.description = :description")})
+    @NamedQuery(name = "Subject.findByDescription", query = "SELECT s FROM Subject s WHERE s.description = :description"),
+    @NamedQuery(name = "Subject.findByCode", query = "SELECT s FROM Subject s WHERE s.code = :code"),
+    @NamedQuery(name = "Subject.findByCredits", query = "SELECT s FROM Subject s WHERE s.credits = :credits")})
 public class Subject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,8 +45,10 @@ public class Subject implements Serializable {
     private String name;
     @Size(max = 255)
     private String description;
-    @OneToMany(mappedBy = "idSubject")
-    private Collection<Schedule> scheduleCollection;
+    @Size(max = 10)
+    private String code;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    private BigDecimal credits;
 
     public Subject() {
     }
@@ -84,13 +86,20 @@ public class Subject implements Serializable {
         this.description = description;
     }
 
-    @XmlTransient
-    public Collection<Schedule> getScheduleCollection() {
-        return scheduleCollection;
+    public String getCode() {
+        return code;
     }
 
-    public void setScheduleCollection(Collection<Schedule> scheduleCollection) {
-        this.scheduleCollection = scheduleCollection;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public BigDecimal getCredits() {
+        return credits;
+    }
+
+    public void setCredits(BigDecimal credits) {
+        this.credits = credits;
     }
 
     @Override

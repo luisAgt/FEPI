@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -21,14 +22,20 @@ public class SubjectJpaController {
         return emf.createEntityManager();
 }
 
-    public void create(Subject entidad) throws Exception {
+    public void create(Subject entidad) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(entidad);
             em.getTransaction().commit();
-        } finally {
+        } catch(Exception e){
+            if(em != null && em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error al crear Subject: " + e.getMessage(), e);
+        }
+        finally {
             if (em != null) em.close();
         }
     }
@@ -96,6 +103,22 @@ public class SubjectJpaController {
             String simpleName = Subject.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
         } finally {
+            em.close();
+        }
+    }
+
+    Subject findSubjectByCode(String code) {
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.createQuery(
+                "SELECT s FROM Subject s WHERE s.code = :code",
+                Subject.class)
+                .setParameter("code", code)
+                .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }finally{
             em.close();
         }
     }

@@ -4,10 +4,14 @@
  */
 package com.equipo1.persistence;
 
+import com.equipo1.entities.AcademicGroup;
+import com.equipo1.entities.Horary;
 import com.equipo1.entities.Schedule;   // Cambia Schedule por la clase real
+import com.equipo1.entities.Subject;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -67,6 +71,21 @@ public class ScheduleJpaController {
         }
     }
 
+    public Schedule findSchedule(AcademicGroup group, Horary horary, Subject subject){
+        EntityManager em = getEntityManager();
+        try{
+            return em.createQuery(
+                "SELECT s FROM Schedule s " +
+                "WHERE s.idGroup = :g AND s.idHorary = :h AND s.idSubject = :sub",
+                Schedule.class)
+                .setParameter("g",   group)
+                .setParameter("h",   horary)
+                .setParameter("sub", subject)
+                .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }
+    }
     public List<Schedule> findScheduleEntities() {
         return findScheduleEntities(true, -1, -1);
     }

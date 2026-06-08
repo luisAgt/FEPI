@@ -4,14 +4,21 @@
  */
 package com.equipo1.persistence;
 
+import com.equipo1.entities.AcademicGroup;
 import com.equipo1.entities.AccessSchool;
 import com.equipo1.entities.Book;
+import com.equipo1.entities.Enrollment;
+import com.equipo1.entities.Horary;
 import com.equipo1.entities.LabMaterial;
 import com.equipo1.entities.LoanBook;
 import com.equipo1.entities.LoanMaterial;
+import com.equipo1.entities.Schedule;
 import com.equipo1.entities.Student;
+import com.equipo1.entities.Subject;
 import com.equipo1.entities.Users;
+import java.sql.Date;
 import java.util.List;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -29,6 +36,12 @@ public class PersistenceController {
     LoanMaterialJpaController loanMJPA = new LoanMaterialJpaController();
     
     AccessSchoolJpaController accessJPA = new AccessSchoolJpaController();
+    
+    SubjectJpaController subjectJPA = new SubjectJpaController();
+    ScheduleJpaController scheduleJPA = new ScheduleJpaController();
+    AcademicGroupJpaController groupJPA = new AcademicGroupJpaController();
+    EnrollmentJpaController enrollJPA = new EnrollmentJpaController();
+    HoraryJpaController horaryJPA = new HoraryJpaController();
     
     /**
      * 
@@ -87,6 +100,7 @@ public class PersistenceController {
     public void createLoanBook(LoanBook loan) throws Exception{
         loanBJPA.create(loan);
     }
+    
     /**
      * @param book
      * @throws java.lang.Exception 
@@ -148,11 +162,48 @@ public class PersistenceController {
     public Student findStudentByBoleta(String boleta){
         return studentJPA.findStudentByBoleta(boleta);
     }
+    
     public AccessSchool findLastAccessByUser(int id){
         return accessJPA.findLastAccessByUser(id);
     }
 
     public Users findUserById(Integer idUser) {
         return userJPA.findUsersById(idUser);
+    }
+
+    public void createSubject(Subject subject) throws Exception {
+        subjectJPA.create(subject);
+    }
+
+    public void createGroup(AcademicGroup group) throws Exception {
+        groupJPA.create(group);
+    }
+
+    public Schedule findSchedule(AcademicGroup agroup, Horary horary, Subject subject) {
+        return scheduleJPA.findSchedule(agroup, horary, subject);
+    }
+
+    public Enrollment findEnrollment(Student student, Schedule schedule) {
+        return enrollJPA.findEnrollment(student, schedule);
+    }
+
+    public Horary findHorary(String weekDay, String startTime, String endTime) {
+        return horaryJPA.findHorary(weekDay, startTime, endTime);
+    }
+
+    public void createSchedule(Schedule schedule) throws Exception {        
+        scheduleJPA.create(schedule);
+    }
+
+    public void createEnrollment(Enrollment enroll) throws Exception {
+        enrollJPA.create(enroll);
+    }
+
+    public AcademicGroup findAcademicGroup(String semester, String carrer, String aGroup) {
+        return groupJPA.findAcademicGroup(semester, carrer, aGroup);
+    }
+
+    public Subject finSubjectByCode(String code) {
+        return subjectJPA.findSubjectByCode(code);
     }
 }

@@ -117,7 +117,20 @@ private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Acces
         }
     }    
 
-    AccessSchool findLastAccessByUser(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+public AccessSchool findLastAccessByUser(int idUser){
+        EntityManager em = getEntityManager();
+        try{
+            return em.createQuery(
+                    "SELECT a FROM AccessSchool a " +
+                            "WHERE a.idUser.idUser = :idUser " +
+                            "ORDER BY a.checkDate DESC",
+                    AccessSchool.class                    
+            ).setParameter("idUser", idUser).setMaxResults(1).getSingleResult();
+            
+        }catch(Exception e){
+            return null;
+        }finally {
+            em.close();
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.equipo1.entities.Student;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -120,7 +121,16 @@ public class StudentJpaController {
         }
     }    
 
-    Student findStudentByBoleta(String boleta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+public Student findStudentByBoleta(String boleta){
+        EntityManager em = getEntityManager();
+
+        try{
+            return em.createNamedQuery("Student.findByBoletaSt", Student.class).setParameter("boletaSt", boleta).getSingleResult();
+        }   catch(NoResultException e){
+            return null;
+        }   finally{
+            em.close();
+        }
+        
     }
 }

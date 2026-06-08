@@ -48,7 +48,7 @@
     <body>
         <h1><---------E S T U D I A N T E S--------></h1>
         <h2>Bienvenid@, <%=user.getFullname() %></h2>
-        <a href="url">Ver materias inscritas</a> <br><br>
+        <a href="Subjects.jsp">Ver materias inscritas</a> <br><br>
         <a href="url">Ver asistencias</a> <br><br>
         <a href="url">Modificar datos personales</a> <br><br>
         <a href="SvLogout">Cerrar session</a>

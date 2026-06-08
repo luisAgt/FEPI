@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 /**
@@ -75,6 +76,25 @@ public class AcademicGroupJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public AcademicGroup findAcademicGroup(String semester, String carrer, String aGroup){
+        EntityManager em = getEntityManager();
+        
+        try{
+            return em.createQuery(
+                "SELECT g FROM AcademicGroup g " +
+                "WHERE g.semester = :sem AND g.carrer = :car AND g.a_group = :ag",
+                AcademicGroup.class)
+                .setParameter("sem", semester)
+                .setParameter("car", carrer)
+                .setParameter("ag",  aGroup)
+                .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }finally{
+            em.close();
+        }
+    }
 
     public List<AcademicGroup> findAcademicGroupEntities() {
         return findAcademicGroupEntities(true, -1, -1);
@@ -118,4 +138,5 @@ public class AcademicGroupJpaController implements Serializable {
             em.close();
         }
     }    
+    
 }

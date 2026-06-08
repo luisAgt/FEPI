@@ -5,14 +5,20 @@
 package com.equipo1.logic;
 
 import com.equipo1.dto.CredentialData;
+import com.equipo1.entities.AcademicGroup;
 import com.equipo1.entities.AccessSchool;
 import com.equipo1.entities.Book;
+import com.equipo1.entities.Enrollment;
+import com.equipo1.entities.Horary;
 import com.equipo1.entities.LabMaterial;
 import com.equipo1.entities.LoanBook;
 import com.equipo1.entities.LoanMaterial;
+import com.equipo1.entities.Schedule;
 import com.equipo1.entities.Student;
+import com.equipo1.entities.Subject;
 import com.equipo1.entities.Users;
 import com.equipo1.persistence.PersistenceController;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,8 +28,9 @@ import java.util.List;
  *s
  * @author XPxTBxLLX
  */
-public class Controller {
+public class Controller {    
     PersistenceController persistence = new PersistenceController();
+    
     public Users ValidateUser(String uname, String pass) {
             return persistence.ValidateUser(uname, pass);
         }
@@ -184,6 +191,65 @@ public class Controller {
         }
         
         return "ENTRY";
+    }    
+
+    public void createSubject(String code, String name, BigDecimal credits) throws Exception {
+        Subject subject = new Subject();
+        
+        subject.setCode(code);
+        subject.setName(name);
+        subject.setCredits(credits);
+        subject.setDescription("Unknown");
+        persistence.createSubject(subject);
+    }
+
+    public void createGroup(String semester, String carrer, String agroup) throws Exception {
+        AcademicGroup group = new AcademicGroup();
+        
+        group.setSemester(semester);
+        group.setCarrer(carrer);
+        group.setAGroup(agroup);
+        
+        persistence.createGroup(group);
+    }
+
+    public Horary findHorary(String weekDay, String startTime, String endTime) {
+        return persistence.findHorary( weekDay,  startTime, endTime);
+    }
+
+    public Schedule findSchedule(AcademicGroup agroup, Horary horary, Subject subject) {
+        return  persistence.findSchedule(agroup, horary, subject);
+    }
+
+    public Enrollment findEnrollment(Student student, Schedule schedule) {
+        return persistence.findEnrollment(student, schedule);
+    }
+
+    public void createSchedule(AcademicGroup agroup, Horary horary, Subject subject) throws Exception {
+        Schedule sche = new Schedule();
+        
+        sche.setIdGroup(agroup);
+        sche.setIdHorary(horary);
+        sche.setIdSubject(subject);
+        
+        persistence.createSchedule(sche);
+    }
+
+    public void createEnrollment(Student student, Schedule schedule) throws Exception {
+        Enrollment enroll = new Enrollment();
+        
+        enroll.setIdStudent(student);
+        enroll.setIdSchedule(schedule);
+        
+        persistence.createEnrollment(enroll);
+    }
+
+    public Subject findSubjectByCode(String code) {
+        return persistence.finSubjectByCode(code);
+    }
+
+    public AcademicGroup findAcademicGroup(String semester, String carrer, String aGroup) {
+        return persistence.findAcademicGroup(semester, carrer, aGroup);
     }
 }
 

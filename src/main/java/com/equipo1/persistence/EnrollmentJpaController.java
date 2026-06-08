@@ -5,11 +5,14 @@
 package com.equipo1.persistence;
 
 import com.equipo1.entities.Enrollment;   // Cambia Enrollment por la clase real
+import com.equipo1.entities.Schedule;
+import com.equipo1.entities.Student;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -64,6 +67,23 @@ public class EnrollmentJpaController {
         try {
             return em.find(Enrollment.class, id);
         } finally {
+            em.close();
+        }
+    }
+    
+    public Enrollment findEnrollment(Student student, Schedule schedule){
+        EntityManager em = getEntityManager();
+        try{
+            return em.createQuery(
+                "SELECT e FROM Enrollment e " +
+                "WHERE e.idStudent = :st AND e.idSchedule = :sc",
+                Enrollment.class)
+                .setParameter("st", student)
+                .setParameter("sc", schedule)
+                .getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        } finally{
             em.close();
         }
     }

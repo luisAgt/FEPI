@@ -81,11 +81,11 @@ public class AcademicGroup implements Serializable {
         this.carrer = carrer;
     }
 
-    public String getTurn() {
+    public String getAGroup() {
         return a_group;
     }
 
-    public void setTurn(String a_group) {
+    public void setAGroup(String a_group) {
         this.a_group = a_group;
     }
 
