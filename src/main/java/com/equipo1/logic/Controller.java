@@ -7,6 +7,7 @@ package com.equipo1.logic;
 import com.equipo1.dto.CredentialData;
 import com.equipo1.entities.AcademicGroup;
 import com.equipo1.entities.AccessSchool;
+import com.equipo1.entities.Attendance;
 import com.equipo1.entities.Book;
 import com.equipo1.entities.Enrollment;
 import com.equipo1.entities.Horary;
@@ -23,6 +24,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.List;
 /**
  *s
@@ -250,6 +252,25 @@ public class Controller {
 
     public AcademicGroup findAcademicGroup(String semester, String carrer, String aGroup) {
         return persistence.findAcademicGroup(semester, carrer, aGroup);
+    }
+
+    public Enrollment findActiveEnrollment(Student student, String weekDay, LocalTime now) {
+        return persistence.findActiveEnrollment(student, weekDay, now);
+    }
+
+    public boolean attendanceExistsToday(Enrollment enrollment, LocalDate date) {
+        return persistence.attendanceExistsToday(enrollment, date);
+    }
+
+    public void createAttendance(Student student, Enrollment activeEnrollment, Timestamp checkDate, String status) throws Exception {
+        Attendance att = new Attendance();
+        
+        att.setBoleta(student);
+        att.setIdEnrollment(activeEnrollment);
+        att.setCheckDate(checkDate);
+        att.setStatus(status);
+        
+        persistence.createAttendance(att);        
     }
 }
 

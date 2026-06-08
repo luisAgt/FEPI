@@ -5,11 +5,15 @@
 package com.equipo1.persistence;
 
 import com.equipo1.entities.Attendance;   // Cambia Attendance por la clase real
+import com.equipo1.entities.Enrollment;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -96,6 +100,30 @@ public class AttendanceJpaController {
         try {
             String simpleName = Attendance.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+
+    public boolean attendanceExistToday(Enrollment enrollment, LocalDate date) {
+        EntityManager em = getEntityManager();
+        try {
+            Timestamp startOfDay = Timestamp.valueOf(date.atStartOfDay());
+            Timestamp endOfDay   = Timestamp.valueOf(date.atTime(23, 59, 59));
+
+            TypedQuery<Long> query = em.createQuery(
+                "SELECT COUNT(a) FROM Attendance a " +
+                "WHERE a.idEnrollment = :en " +
+                "AND a.checkDate BETWEEN :start AND :end",
+                Long.class);
+            query.setParameter("en", enrollment);
+            query.setParameter("start", startOfDay);
+            query.setParameter("end", endOfDay);
+            return query.getSingleResult() > 0;
+
+        } catch (Exception e) {
+            System.out.println("Error attendanceExistToday: " + e.getMessage());
+            return false;
         } finally {
             em.close();
         }

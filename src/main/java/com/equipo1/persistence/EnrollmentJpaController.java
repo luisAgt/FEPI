@@ -7,12 +7,15 @@ package com.equipo1.persistence;
 import com.equipo1.entities.Enrollment;   // Cambia Enrollment por la clase real
 import com.equipo1.entities.Schedule;
 import com.equipo1.entities.Student;
+import java.time.LocalTime;
+import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -116,6 +119,47 @@ public class EnrollmentJpaController {
         try {
             String simpleName = Enrollment.class.getSimpleName();
             return ((Long) em.createQuery("SELECT COUNT(e) FROM " + simpleName + " e").getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Enrollment findActiveEnrollment(Student student, String weekDay, LocalTime now) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Enrollment> query = em.createQuery(
+                "SELECT e FROM Enrollment e " +
+                "WHERE e.idStudent = :st " +
+                "AND e.idSchedule.idHorary.weekDay = :wd",
+                Enrollment.class);
+            query.setParameter("st", student);
+            query.setParameter("wd", weekDay);
+            List<Enrollment> list = query.getResultList();
+
+            for (Enrollment e : list) {
+                // Convertir java.util.Date a LocalTime usando Calendar
+                Calendar calStart = Calendar.getInstance();
+                calStart.setTime(e.getIdSchedule().getIdHorary().getStartTime());
+                LocalTime start = LocalTime.of(
+                    calStart.get(Calendar.HOUR_OF_DAY),
+                    calStart.get(Calendar.MINUTE));
+
+                Calendar calEnd = Calendar.getInstance();
+                calEnd.setTime(e.getIdSchedule().getIdHorary().getEndTime());
+                LocalTime end = LocalTime.of(
+                    calEnd.get(Calendar.HOUR_OF_DAY),
+                    calEnd.get(Calendar.MINUTE));
+
+                // Clase activa: hora actual entre start y end
+                if (!now.isBefore(start) && now.isBefore(end)) {
+                    return e;
+                }
+            }
+            return null;
+
+        } catch (Exception e) {
+            System.out.println("Error findActiveEnrollment: " + e.getMessage());
+            return null;
         } finally {
             em.close();
         }

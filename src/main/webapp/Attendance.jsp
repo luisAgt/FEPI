@@ -13,5 +13,13 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <form method="POST" action="SvAttendance">
+            <input type="text" name="boleta" placeholder="Escanea tu boleta para verificar asistencias" autofocus autocomplete="off"
+                              onkeydown="if(event.key==='Enter'){ document.getElementById('formAttendance').submit(); }">
+            <br><br>
+            
+        </form>
+        
+        
     </body>
 </html>

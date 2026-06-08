@@ -6,6 +6,7 @@ package com.equipo1.persistence;
 
 import com.equipo1.entities.AcademicGroup;
 import com.equipo1.entities.AccessSchool;
+import com.equipo1.entities.Attendance;
 import com.equipo1.entities.Book;
 import com.equipo1.entities.Enrollment;
 import com.equipo1.entities.Horary;
@@ -17,6 +18,8 @@ import com.equipo1.entities.Student;
 import com.equipo1.entities.Subject;
 import com.equipo1.entities.Users;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.NoResultException;
 
@@ -42,6 +45,8 @@ public class PersistenceController {
     AcademicGroupJpaController groupJPA = new AcademicGroupJpaController();
     EnrollmentJpaController enrollJPA = new EnrollmentJpaController();
     HoraryJpaController horaryJPA = new HoraryJpaController();
+    
+    AttendanceJpaController attenJPA = new AttendanceJpaController();
     
     /**
      * 
@@ -205,5 +210,17 @@ public class PersistenceController {
 
     public Subject finSubjectByCode(String code) {
         return subjectJPA.findSubjectByCode(code);
+    }
+
+    public Enrollment findActiveEnrollment(Student student, String weekDay, LocalTime now) {
+        return enrollJPA.findActiveEnrollment(student, weekDay, now);
+    }
+
+    public boolean attendanceExistsToday(Enrollment enrollment, LocalDate date) {
+        return attenJPA.attendanceExistToday(enrollment, date);
+    }
+
+    public void createAttendance(Attendance att) throws Exception {
+        attenJPA.create(att);
     }
 }
