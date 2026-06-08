@@ -17,35 +17,25 @@
 </head>
 <body>
     <form action="SvLoanBook" method="POST" class="form">
-        <div>
-            <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" readonly autofocus><br><br>
-            <input type="text" placeholder="Nombre Completo" readonly autofocus id="qrInput"><br><br>
-            <input type="text" placeholder="Boleta" readonly autofocus id="qrInput"><br><br>
-        </div>
-        <div>
-            <input type="text" name="status" placeholder="Estatus" ><br><br>
-            <input type="text" name="loan_date" placeholder="Fecha de emision" readonly ><br><br>
-            <input type="date" name="return_date" placeholder="Fecha de devolución"><br><br>
-            <select name = "id_book">
-                <%
-                    List<Book> books = (List<Book>) request.getAttribute("books");
-                    if(books != null){
-                        for (Book b : books){
-                            System.out.println(b.getTittle());
-                %>
-                <option value="<%= b.getIdBook()%>">
-                    <%= b.getTittle() %>
-                </option>
-                <%  
-                        }
-                    }
-                %>
-            </select>
-        </div>
-        
-        <div>
-            <input type ="submit" value="Enviar">
-        </div>
-    </form>
+    <input type="text" name="id_user" id="id_user" placeholder="ESCANEA TU CREDENCIAL" required><br><br>
+    <input type="text" placeholder="Nombre Completo" readonly id="nombre_usuario"><br><br>
+    
+    <input type="text" name="status" placeholder="Estatus" value="Activo" required><br><br>
+    
+    <label>Fecha de devolución:</label>
+    <input type="date" name="return_date" required><br><br>
+    
+    <select name="id_book" class="form-select">
+        <%
+            List<Book> books = (List<Book>) request.getAttribute("books");
+            if(books != null){
+                for (Book b : books){
+        %>
+        <option value="<%= b.getIdBook()%>"><%= b.getTittle() %></option>
+        <%  } } %>
+    </select>
+    
+    <button type="submit" class="btn btn-primary">Enviar Préstamo</button>
+</form>
 </body>
 </html>

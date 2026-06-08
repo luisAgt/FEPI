@@ -71,7 +71,17 @@ public class Controller {
     public List<Book> getAvailableBooks() {
         return persistence.getAvailableBooks();
     }
+    // Método para buscar al usuario
+    public Users findUser(int idUser) {
+        // Asegúrate de que "usersJpa" sea el nombre de tu variable UsersJpaController
+        return persistence.findUser(idUser); 
+    }
 
+    // Método para buscar el material de laboratorio
+    public LabMaterial findLabMaterial(int idMaterial) {
+        // Asegúrate de que "labMaterialJpa" sea el nombre de tu variable LabMaterialJpaController
+        return persistence.findMaterial(idMaterial);
+    }
     public void createLoanMaterial(int idMaterial, int idUser, LocalDateTime loanDate, LocalDate returnDate, String status) throws Exception {
         LoanMaterial loan = new LoanMaterial();    
         LabMaterial material = persistence.findMaterial(idMaterial);

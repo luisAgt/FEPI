@@ -6,16 +6,17 @@ package com.equipo1.servlets;
 
 import com.equipo1.logic.Controller;
 import com.equipo1.entities.LabMaterial;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime;// <-- FALTA ESTA
+import java.io.IOException;
+import java.io.PrintWriter;                      // <-- FALTA ESTA
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  *
@@ -33,6 +34,7 @@ public class SvLoanMaterial extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    Controller controller = new Controller();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,7 +66,7 @@ public class SvLoanMaterial extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
-        Controller controller = new Controller();
+        
         
         List<LabMaterial> materials = controller.getAvailableMaterials();
         System.out.println("Materiales: " + materials.size());
@@ -83,28 +85,26 @@ public class SvLoanMaterial extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        try{
-            int idMaterial = Integer.parseInt(request.getParameter("id_material"));
+        
+        try {
+            // 1. Recibir los IDs desde tu formulario (Tu Controller espera enteros)
             int idUser = Integer.parseInt(request.getParameter("id_user"));
-            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
-            LocalDateTime loanDate = LocalDateTime.now();            
-            String status = "ACTIVO";
+            int idMaterial = Integer.parseInt(request.getParameter("id_lab_material"));
             
-            Controller controller = new Controller();
+            // 2. Definir las fechas (Ejemplo: Se presta hoy, se devuelve en 3 días)
+            LocalDateTime loanDate = LocalDateTime.now();
+            LocalDate returnDate = LocalDate.now().plusDays(3);
             
-            controller.createLoanMaterial(
-                    idMaterial,
-                    idUser,
-                    loanDate,
-                    returnDate,
-                    status
-            );
+            // 3. ¡Llamar a tu Controller! Él hará el descuento de stock y la inserción
+            controller.createLoanMaterial(idMaterial, idUser, loanDate, returnDate, "Activo");
             
-            response.sendRedirect("SvLoanMaterial?success=true");
-        }catch(Exception e){
-            e.printStackTrace();
-            response.sendRedirect("SvLoanMaterial?error=true");
+            // Si todo sale bien, redirige al éxito
+            response.sendRedirect("LoanMaterial.jsp?status=success");
+            
+        } catch (Exception e) {
+            // Si tu Controller lanza error (ej. "Stock insuficiente" o "Usuario no encontrado")
+            System.out.println("Error al prestar material: " + e.getMessage());
+            response.sendRedirect("LoanMaterial.jsp?status=error");
         }
     }
 

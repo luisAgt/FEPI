@@ -33,6 +33,7 @@ public class SvLoanBook extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    Controller controller = new Controller();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -62,7 +63,7 @@ public class SvLoanBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Controller controller = new Controller();
+       
         
         List<Book> books = controller.getAvailableBooks();
         System.out.println("Libros: " + books.size());
@@ -79,37 +80,33 @@ public class SvLoanBook extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+   @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        try{
-            int idBook = Integer.parseInt(request.getParameter("id_book"));
+        
+        try {
+            // 1. Recibir datos del JSP
             int idUser = Integer.parseInt(request.getParameter("id_user"));
-            LocalDate returnDate = LocalDate.parse(request.getParameter("return_date"));
-            LocalDateTime loanDate = LocalDateTime.now();
-            String status = "ACTIVO";
-
-            Controller controller = new Controller();
-
-            controller.createLoanBook(
-                    idBook,
-                    idUser,
-                    loanDate,
-                    returnDate,
-                    status
-            );
-
-            response.sendRedirect("SvLoanBook?success=true");
+            int idBook = Integer.parseInt(request.getParameter("id_book"));
+            String status = request.getParameter("status");
             
-        }catch(Exception e){
-            e.printStackTrace();
-            response.sendRedirect("SvLoanBook?error=true");
+            // 2. Convertir la fecha que viene del input type="date"
+            String returnDateStr = request.getParameter("return_date");
+            LocalDate returnDate = LocalDate.parse(returnDateStr); // Convierte "2026-06-15" a objeto Date
+            
+            // Fecha actual de préstamo
+            LocalDateTime loanDate = LocalDateTime.now();
+            
+            // 3. Llamar al controlador con los datos reales
+            controller.createLoanBook(idBook, idUser, loanDate, returnDate, status);
+            
+            response.sendRedirect("LoanBook.jsp?status=success");
+            
+        } catch (Exception e) {
+            System.err.println("Error en préstamo: " + e.getMessage());
+            response.sendRedirect("LoanBook.jsp?status=error");
         }
-        
-        
     }
-
     /**
      * Returns a short description of the servlet.
      *

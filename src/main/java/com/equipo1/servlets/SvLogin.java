@@ -31,6 +31,7 @@ public class SvLogin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    Controller controller = new Controller();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -88,7 +89,6 @@ public class SvLogin extends HttpServlet {
         String uname = request.getParameter("username");
         String pass = request.getParameter("password");
         
-        Controller controller = new Controller();
         Users user = controller.ValidateUser(uname, pass);
                 
         if(user == null){
@@ -105,7 +105,16 @@ public class SvLogin extends HttpServlet {
         session.setAttribute("id_user", user.getIdUser());
         session.setAttribute("username", user.getUsername());
 
-        switch (role) {
+        // Limpiamos la variable para evitar errores por espacios invisibles o minúsculas
+        String safeRole = (role != null) ? role.trim().toUpperCase() : "NULO";
+
+        // AGREGAR ESTA LÍNEA PARA DEPURAR:
+        System.out.println("=========================================");
+        System.out.println("EL ROL RECIBIDO DE LA BD ES: [" + safeRole + "]");
+        System.out.println("EL USUARIO RECIBIDO ES: [" + user.getUsername() + "]");
+        System.out.println("=========================================");
+
+            switch (safeRole) {
                 case "ADMIN":
                     response.sendRedirect("Admin.jsp");
                     break;
@@ -123,16 +132,15 @@ public class SvLogin extends HttpServlet {
                     break;
                 case "ANALOGIC":
                     response.sendRedirect("Laboratory.jsp");
+                    break;
                 default:
                     response.sendRedirect("Login.jsp?error=role");
-                    request.getParameter("error");
                     break;
             }
        
-        }catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
             response.sendRedirect("Login.jsp?error=server");
-            request.getParameter("error");
         }
         
         
