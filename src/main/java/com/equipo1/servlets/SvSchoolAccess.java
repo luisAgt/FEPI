@@ -11,7 +11,9 @@ import com.equipo1.logic.Controller;
 import com.equipo1.services.DAEExtractor;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -82,32 +84,35 @@ public class SvSchoolAccess extends HttpServlet {
         //processRequest(request, response);
         try{
            String boleta = request.getParameter("boleta");
-           
-           Controller controller = new Controller();
-           Student student = controller.findStudentByBoleta(boleta);
-           
-           if(student == null){
-               request.setAttribute("error", "Estudiante no encontrado");
-               request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
-               return;
-           }
+
+            Controller controller = new Controller();
+            Student student = controller.findStudentByBoleta(boleta);
+
+            if (student == null) {
+                request.setAttribute("error", "Estudiante no encontrado");
+                request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
+                return;
+            }
+
             Users user = student.getUsers();
-            
-            LocalDateTime date_a = LocalDateTime.now();
-            String access = controller.determineAccessType(user.getIdUser());
-            int gate = 1;
-            
-            controller.createAccess(user.getIdUser(), date_a, access, gate);
-            
-            request.setAttribute("carrer", student.getCarrer());
-            request.setAttribute("fullname", user.getFullname());
-            request.setAttribute("email", user.getEmail());
-            request.setAttribute("status", student.getStatus());
-            request.setAttribute("access", access);
-            request.setAttribute("date_a", date_a);
+
+            ZoneId mexicoZone       = ZoneId.of("America/Mexico_City");
+            LocalDateTime nowMX     = LocalDateTime.now(mexicoZone);
+            Timestamp checkDate     = Timestamp.valueOf(nowMX);
+            String access           = controller.determineAccessType(user.getIdUser());
+            int gate                = 1;
+
+            controller.createAccess(user.getIdUser(), nowMX, access, gate);
+
+            request.setAttribute("carrer",    student.getCarrer());
+            request.setAttribute("fullname",  user.getFullname());
+            request.setAttribute("email",     user.getEmail());
+            request.setAttribute("status",    student.getStatus());
+            request.setAttribute("access",    access);
+            request.setAttribute("date_a",    checkDate);
             request.setAttribute("birthdate", user.getBirthdate());
-            request.setAttribute("gate", gate);
-            
+            request.setAttribute("gate",      gate);
+
             request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
         }catch(Exception e){
             e.printStackTrace();

@@ -5,6 +5,10 @@
 --%>
 
 <%
+    response.setHeader("Cache-Control", "no-cache, no store, multi-revalidate");
+    response.setHeader("Pragma", "no cache");
+    response.setDateHeader("Expires", 0);
+    
     String role =
         (String) session.getAttribute("role");
 
@@ -16,25 +20,9 @@
     }
 %>
 
+<%@page import="com.equipo1.entities.Users"%>
 <%
-    response.setHeader("Cache-Control",
-            "no-cache, no-store, must-revalidate");
-
-    response.setHeader("Pragma", "no-cache");
-
-    response.setDateHeader("Expires", 0);
-
-    if(role == null || !role.equals("ADMIN")){
-
-        response.sendRedirect("Login.jsp");
-
-        return;
-    }
-%>
-
-<%@page import="com.equipo1.entities.System_user"%>
-<%
-    System_user user = (System_user) session.getAttribute("user");
+    Users user = (Users) session.getAttribute("user");
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -47,7 +35,7 @@
     </head>
     <body>
         <h1><---------A D M I N I S T R A C I O N---------></h1>
-        <h2>Bienvenid@, <%=user.getFullName() %></h2>
+        <h2>Bienvenid@, <%=user.getFullname()%></h2>
         <a href="url"> Registrar usuario</a> <br><br>
         <a href="url"> Modificar usuario</a> <br><br>
         <a href="url"> Registrar libro</a> <br><br>

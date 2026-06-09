@@ -223,4 +223,12 @@ public class PersistenceController {
     public void createAttendance(Attendance att) throws Exception {
         attenJPA.create(att);
     }
+
+    public List<Enrollment> findEnrollmentByStudent(Integer idStudent) {
+        return enrollJPA.findEnrollmentByStudent(idStudent);
+    }
+
+    public List<Attendance> findAttendanceByStudent(Student student) {
+        return attenJPA.findAttendanceByStudent(student);
+    }
 }

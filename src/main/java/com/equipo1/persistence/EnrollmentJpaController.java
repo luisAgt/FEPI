@@ -164,4 +164,26 @@ public class EnrollmentJpaController {
             em.close();
         }
     }
+
+    List<Enrollment> findEnrollmentByStudent(Integer idStudent) {
+        EntityManager em = getEntityManager();
+        try{
+            TypedQuery<Enrollment> query =
+                em.createQuery(
+                    "SELECT e FROM Enrollment e " +
+                    "JOIN FETCH e.idSchedule s " +
+                    "JOIN FETCH s.idSubject " +
+                    "JOIN FETCH s.idGroup " +
+                    "JOIN FETCH s.idHorary " +
+                    "WHERE e.idStudent.idStudent = :idStudent",
+                    Enrollment.class
+                );
+            
+            query.setParameter("idStudent", idStudent);
+            
+            return query.getResultList();
+        }finally{
+            em.close();
+        }
+    }
 }

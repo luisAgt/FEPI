@@ -18,12 +18,9 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -151,11 +148,11 @@ public class SvUploadSchedule extends HttpServlet {
         
         // Agrega esto temporalmente justo después de extractor.getText(document)
         // en el doPost, antes del for(blocks)
-        System.out.println("=== TODOS LOS TOKENS ===");
-        for (Object[] token : tokens) {
-            System.out.println("X=" + token[0] + " Y=" + token[1] + " texto='" + token[2] + "'");
-        }
-        System.out.println("========================");
+//        System.out.println("=== TODOS LOS TOKENS ===");
+//        for (Object[] token : tokens) {
+//            System.out.println("X=" + token[0] + " Y=" + token[1] + " texto='" + token[2] + "'");
+//        }
+//        System.out.println("========================");
         for (String line : lines) {
             if (groupLineP.matcher(line.trim()).find()) {
                 if (current != null) blocks.add(current.toString());
@@ -240,9 +237,13 @@ public class SvUploadSchedule extends HttpServlet {
                 }
             }
         }
-
-        request.setAttribute("textoPDF", texto);
-        request.getRequestDispatcher("Subjects.jsp").forward(request, response);
+        
+        response.sendRedirect("SvSubjects");
+//       List<Enrollment> enrolls = controller.findEnrollmentByStudent(student.getIdStudent());
+//       
+//       request.setAttribute("enrollments", enrolls);
+//        request.setAttribute("textoPDF", texto);
+//        request.getRequestDispatcher("Subjects.jsp").forward(request, response);
 
     } catch (Exception e) {
         e.printStackTrace();

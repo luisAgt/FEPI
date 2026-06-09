@@ -272,6 +272,14 @@ public class Controller {
         
         persistence.createAttendance(att);        
     }
+
+    public List<Enrollment> findEnrollmentByStudent(Integer idStudent) {
+        return persistence.findEnrollmentByStudent(idStudent);
+    }
+
+    public List<Attendance> findAttendanceByStudent(Student student) {
+        return persistence.findAttendanceByStudent( student);
+    }
 }
 
 

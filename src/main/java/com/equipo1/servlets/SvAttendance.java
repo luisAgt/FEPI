@@ -4,6 +4,7 @@
  */
 package com.equipo1.servlets;
 
+import com.equipo1.entities.Attendance;
 import com.equipo1.entities.Enrollment;
 import com.equipo1.entities.Student;
 import com.equipo1.logic.Controller;
@@ -12,16 +13,18 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.Locale;
-import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,6 +42,31 @@ public class SvAttendance extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    try {
+        HttpSession session = request.getSession();
+        Student student = (Student) session.getAttribute("student");
+
+        if (student == null) {
+            response.sendRedirect("Login.jsp");
+            return;
+        }
+
+        Controller controller = new Controller();
+        List<Attendance> attendances = controller.findAttendanceByStudent(student);
+
+        request.setAttribute("attendances", attendances);
+        request.getRequestDispatcher("ViewAttendance.jsp").forward(request, response);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        request.setAttribute("error", e.getMessage());
+        request.getRequestDispatcher("ViewAttendance.jsp").forward(request, response);
+    }
+}
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -79,10 +107,13 @@ public class SvAttendance extends HttpServlet {
             }
 
             // ── 2. Hora y día actual ──────────────────────────────────────────
-            LocalDateTime now       = LocalDateTime.now();
-            LocalTime     nowTime   = now.toLocalTime();
+            //LocalDateTime now       = LocalDateTime.now();
+            ZoneId mexicoZone   = ZoneId.of("America/Mexico_City");
+            LocalDateTime now   = LocalDateTime.now(mexicoZone);
+            LocalTime nowTime   = now.toLocalTime();
+            //LocalTime     nowTime   = now.toLocalTime();
             String        todayDay  = now.getDayOfWeek().getDisplayName(
-                                        TextStyle.FULL, new Locale("es", "MX"))
+                                        TextStyle.FULL, Locale.forLanguageTag("es-MX"))
                                         .toUpperCase(); // "LUNES", "MARTES", etc.
 
             // Normalizar: quitar acentos para coincidir con BD
@@ -98,6 +129,7 @@ public class SvAttendance extends HttpServlet {
                                             student, todayDay, nowTime);
 
             if (activeEnrollment == null) {
+                
                 throw new Exception("No hay clase en este momento para la boleta: " + boleta);
             }
 
@@ -112,7 +144,9 @@ public class SvAttendance extends HttpServlet {
 
             // Construir LocalTime para comparar con nowTime
             LocalTime classStart = LocalTime.of(hour, minute);
-
+            System.out.println("NOW = " + now);
+            System.out.println("ZONE = " + java.time.ZoneId.systemDefault());
+            System.out.println("Timestamp = " + Timestamp.valueOf(now));
             String status;
             if (!nowTime.isAfter(classStart.plusMinutes(10))) {
                 status = "ON_TIME";

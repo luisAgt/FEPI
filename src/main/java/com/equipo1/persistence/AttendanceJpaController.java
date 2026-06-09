@@ -6,8 +6,10 @@ package com.equipo1.persistence;
 
 import com.equipo1.entities.Attendance;   // Cambia Attendance por la clase real
 import com.equipo1.entities.Enrollment;
+import com.equipo1.entities.Student;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -94,6 +96,24 @@ public class AttendanceJpaController {
             em.close();
         }
     }
+    
+    public List<Attendance> findAttendanceByStudent(Student student) {
+    EntityManager em = getEntityManager();
+    try {
+        TypedQuery<Attendance> query = em.createQuery(
+            "SELECT a FROM Attendance a " +
+            "WHERE a.idEnrollment.idStudent = :st " +
+            "ORDER BY a.checkDate DESC",
+            Attendance.class);
+        query.setParameter("st", student);
+        return query.getResultList();
+    } catch (Exception e) {
+        System.out.println("Error findAttendanceByStudent: " + e.getMessage());
+        return new ArrayList<>();
+    } finally {
+        em.close();
+    }
+}
 
     public int getAttendanceCount() {
         EntityManager em = getEntityManager();

@@ -5,24 +5,12 @@
 --%>
 
 <%
+    response.setHeader("Cache-Control", "no-cache, no store, multi-revalidate");
+    response.setHeader("Pragma", "no cache");
+    response.setDateHeader("Expires", 0);
+    
     String role =
         (String) session.getAttribute("role");
-
-    if(role == null || !role.equals("STUDENT")){
-
-        response.sendRedirect("Login.jsp");
-
-        return;
-    }
-%>
-
-<%
-    response.setHeader("Cache-Control",
-            "no-cache, no-store, must-revalidate");
-
-    response.setHeader("Pragma", "no-cache");
-
-    response.setDateHeader("Expires", 0);
 
     if(role == null || !role.equals("STUDENT")){
 
@@ -48,8 +36,8 @@
     <body>
         <h1><---------E S T U D I A N T E S--------></h1>
         <h2>Bienvenid@, <%=user.getFullname() %></h2>
-        <a href="Subjects.jsp">Ver materias inscritas</a> <br><br>
-        <a href="url">Ver asistencias</a> <br><br>
+        <a href="SvSubjects">Ver materias inscritas</a> <br><br>
+        <a href="SvAttendance" >Ver asistencias</a> <br><br>
         <a href="url">Modificar datos personales</a> <br><br>
         <a href="SvLogout">Cerrar session</a>
     </body>
