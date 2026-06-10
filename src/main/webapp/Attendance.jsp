@@ -8,18 +8,32 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-        <form method="POST" action="SvAttendance">
-            <input type="text" name="boleta" placeholder="Escanea tu boleta para verificar asistencias" autofocus autocomplete="off"
-                              onkeydown="if(event.key==='Enter'){ document.getElementById('formAttendance').submit(); }">
-            <br><br>
-            
+    <body class="login-body">
+
+    <div class="login-container">
+
+        <form id="formAttendance" method="POST" action="SvAttendance" class="login-card">
+
+            <h1 class="logo-title">ACCESCOM</h1>
+            <h2 class="login-title">Registro de Asistencia</h2>
+
+            <input
+                type="text"
+                name="boleta"
+                class="form-control"
+                placeholder="Escanea tu boleta"
+                autofocus
+                autocomplete="off"
+                onkeydown="if(event.key==='Enter'){ document.getElementById('formAttendance').submit(); }">
+
         </form>
-        
-        
-    </body>
+
+    </div>
+
+</body>
 </html>
