@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SvSubjects", urlPatterns = {"/SvSubjects"})
 public class SvSubjects extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,7 +69,6 @@ public class SvSubjects extends HttpServlet {
             response.sendRedirect("Login.jsp");
             return;
         }
-        Controller controller = new Controller();
         
         List<Enrollment> enrolls = controller.findEnrollmentByStudent(student.getIdStudent());
         

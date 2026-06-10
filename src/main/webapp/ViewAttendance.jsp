@@ -36,7 +36,7 @@
                         <td><fmt:formatDate value="${att.checkDate}" 
                                 pattern="dd/MM/yyyy HH:mm"/></td>
                         <td>${att.idEnrollment.idSchedule.idSubject.name}</td>
-                        <td>${att.idEnrollment.idSchedule.idGroup.aGroup}</td>
+                        <td>${att.idEnrollment.idSchedule.idGroup.AGroup}</td>
                         <td>${att.status}</td>
                     </tr>
                 </c:forEach>
@@ -44,6 +44,6 @@
         </c:otherwise>
     </c:choose>
 
-    <br><a href="index.jsp">Volver</a>
+    <br><a href="Student.jsp">Volver</a>
 </body>
 </html>

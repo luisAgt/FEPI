@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SvLogin", urlPatterns = {"/SvLogin"})
 public class SvLogin extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -89,7 +90,6 @@ public class SvLogin extends HttpServlet {
         String uname = request.getParameter("username");
         String pass = request.getParameter("password");
         
-        Controller controller = new Controller();
         Users user = controller.ValidateUser(uname, pass);
                 
         if(user == null){

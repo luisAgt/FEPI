@@ -45,11 +45,35 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1><---------P R O F E S O R E S---------></h1>
-        <h2>Bienvenid@, <%=user.getFullname()%></h2>
-        <a href="url">Ver materias inscritas</a> <br><br>
-        <a href="url">Ver asistencias</a> <br><br>
-        <a href="url">Modificar datos personales</a> <br><br>
-        <a href="SvLogout">Cerrar session</a>
+        <div class="admin-container">
+
+    <div class="admin-header">
+        <h1>Portal del Profesor</h1>
+        <h3>Bienvenid@, <%=user.getFullname()%></h3>
+    </div>
+
+    <div class="admin-menu">
+
+        <a href="url" class="admin-card">
+            Ver materias asignadas
+        </a>
+
+        <a href="url" class="admin-card">
+            Ver asistencias
+        </a>
+
+        <a href="url" class="admin-card">
+            Modificar correo
+        </a>
+
+    </div>
+
+    <div class="logout-section">
+        <a href="SvLogout" class="btn btn-danger">
+            Cerrar sesión
+        </a>
+    </div>
+
+</div>
     </body>
 </html>

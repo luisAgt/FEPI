@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SvRegister", urlPatterns = {"/SvRegister"})
 public class SvRegister extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -95,7 +96,6 @@ public class SvRegister extends HttpServlet {
            
            DAEExtractor extractor = new DAEExtractor();
            CredentialData data = extractor.extractData(url);
-           Controller controller = new Controller();
            
            
            Student existing = controller.findStudentByBoleta(data.getBoleta());

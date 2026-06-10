@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SvSchoolAccess", urlPatterns = {"/SvSchoolAccess"})
 public class SvSchoolAccess extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -84,8 +85,7 @@ public class SvSchoolAccess extends HttpServlet {
         //processRequest(request, response);
         try{
            String boleta = request.getParameter("boleta");
-
-            Controller controller = new Controller();
+           
             Student student = controller.findStudentByBoleta(boleta);
 
             if (student == null) {

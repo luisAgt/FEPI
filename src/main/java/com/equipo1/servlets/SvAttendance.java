@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SvAttendance", urlPatterns = {"/SvAttendance"})
 public class SvAttendance extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -54,7 +55,6 @@ public class SvAttendance extends HttpServlet {
             return;
         }
 
-        Controller controller = new Controller();
         List<Attendance> attendances = controller.findAttendanceByStudent(student);
 
         request.setAttribute("attendances", attendances);
@@ -98,7 +98,6 @@ public class SvAttendance extends HttpServlet {
         throws ServletException, IOException {        
         try {
             String boleta = request.getParameter("boleta");
-            Controller controller = new Controller();
 
             // ── 1. Buscar estudiante ──────────────────────────────────────────
             Student student = controller.findStudentByBoleta(boleta);
@@ -113,7 +112,7 @@ public class SvAttendance extends HttpServlet {
             LocalTime nowTime   = now.toLocalTime();
             //LocalTime     nowTime   = now.toLocalTime();
             String        todayDay  = now.getDayOfWeek().getDisplayName(
-                                        TextStyle.FULL, Locale.forLanguageTag("es-MX"))
+                                        TextStyle.FULL, new Locale("es", "MX"))
                                         .toUpperCase(); // "LUNES", "MARTES", etc.
 
             // Normalizar: quitar acentos para coincidir con BD
@@ -168,12 +167,12 @@ public class SvAttendance extends HttpServlet {
             System.out.println("Asistencia registrada: " + boleta + " " + status);
 
             request.setAttribute("mensaje", "Asistencia registrada: " + status);
-            request.getRequestDispatcher("Attendance.jsp").forward(request, response);
+            request.getRequestDispatcher("Attendance.jsp?success=success").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("Attendance.jsp").forward(request, response);
+            request.getRequestDispatcher("Attendance.jsp?status=error").forward(request, response);
         }
     }
 

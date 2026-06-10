@@ -42,6 +42,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 @MultipartConfig
 public class SvUploadSchedule extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -134,7 +135,6 @@ public class SvUploadSchedule extends HttpServlet {
         String boleta = boletaM.group(1);
         System.out.println("Boleta extraída: " + boleta);
 
-        Controller controller = new Controller();
         Student student = controller.findStudentByBoleta(boleta);
         if (student == null) {
             throw new Exception("No existe alumno con boleta: " + boleta);

@@ -4,7 +4,7 @@
     Author     : XPxTBxLLX
 --%>
 
-<%@page import="com.equipo1.entities.Lab_material"%>
+<%@page import="com.equipo1.entities.LabMaterial"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -18,9 +18,9 @@
 <body>
     <form action="SvLoanMaterial" method="POST">
         <div>
-            <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU CREDENCIAL" readonly autofocus><br><br>
-            <input type="text"  placeholder="Nombre Completo" readonly autofocus><br><br>
-            <input type="text" placeholder="Boleta" readonly autofocus id="qrInput"><br><br>
+            <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU BOLETA" autofocus><br><br>
+            <input type="text"  placeholder="Nombre Completo" readonly ><br><br>
+            <input type="text" placeholder="Boleta" readonly  id="qrInput"><br><br>
         </div>
         <div>
             <input type="text" name="status" placeholder="Estatus" ><br><br>
@@ -28,9 +28,9 @@
             <input type="date" name="date_return" placeholder="Fecha de devolución"><br><br>
             <select name = "id_material" class="form-select">
                <%
-                     List<Lab_material> materials = (List<Lab_material>) request.getAttribute("materials");
+                     List<LabMaterial> materials = (List<LabMaterial>) request.getAttribute("materials");
                     if(materials != null ){
-                    for (Lab_material m : materials){
+                    for (LabMaterial m : materials){
                         System.out.println(m.getMaterialName());
                 %>
                 <option value="<%= m.getIdLabMaterial()%>">
