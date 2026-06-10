@@ -128,3 +128,27 @@
     text-align:center;
     margin-top:40px;
 }
+.admin-card{
+    background:white;
+    text-decoration:none;
+    color:#1e293b;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    font-weight:600;
+    font-size:1.1rem;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    transition:all .3s ease;
+}
+
+.admin-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 12px 25px rgba(0,0,0,.12);
+    color:#2563eb;
+}
