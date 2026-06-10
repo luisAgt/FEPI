@@ -1,0 +1,130 @@
+/* Fondo general */
+.login-body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a,
+        #2563eb
+    );
+
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* Contenedor */
+.login-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* Tarjeta */
+.login-card{
+    width:100%;
+    max-width:420px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+    text-align:center;
+}
+
+/* Título principal */
+.logo-title{
+    font-size:2rem;
+    font-weight:700;
+    color:#1e3a8a;
+    margin-bottom:10px;
+}
+
+/* Subtítulo */
+.login-title{
+    font-size:1.2rem;
+    color:#64748b;
+    margin-bottom:30px;
+}
+
+/* Inputs */
+.form-control{
+    border-radius:10px;
+    padding:12px;
+}
+
+/* Botón */
+.btn-primary{
+    border-radius:10px;
+    padding:12px;
+    font-weight:600;
+}
+/* =========================
+   ADMIN
+========================= */
+
+.admin-container{
+    min-height:100vh;
+    background:#f8fafc;
+    padding:40px;
+}
+
+.admin-header{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.admin-header h1{
+    color:#1e3a8a;
+    font-weight:700;
+}
+
+.admin-header h3{
+    color:#64748b;
+}
+
+.admin-menu{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    max-width:1000px;
+    margin:auto;
+}
+
+.admin-card{
+    background:white;
+    text-decoration:none;
+    color:#1e293b;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    font-weight:600;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+}
+
+.admin-card:hover{
+    transform:translateY(-5px);
+    color:#2563eb;
+}
+
+.logout-section{
+    text-align:center;
+    margin-top:40px;
+}

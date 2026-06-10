@@ -11,20 +11,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+                <link rel="stylesheet" href="css/style.css">
     <title>Inicio de sesion</title>
 </head>
-<body>
-    <div>
-        <form action="SvLogin" method="POST">
-            <div>
-                 <h1><---------A C C E S C O M---------></h1>
-                  <h2>Inicio de sesion</h2>
-                <input type="username" name="username" placeholder="Nombre de usuario" autofocus> <br><br>
-                <input type="password" name="password" placeholder="Contraseña" > <br><br>
-                <button type="submit">Entrar</button>
-            </div>
+<body class="login-body">
+
+    <div class="login-container">
+
+        <form action="SvLogin" method="POST" class="login-card">
+
+            <h1 class="logo-title">ACCESCOM</h1>
+
+            <h2 class="login-title">Inicio de Sesión</h2>
+
+            <input
+
+                type="text"
+
+                name="username"
+
+                placeholder="Nombre de usuario"
+
+                class="form-control mb-3"
+
+                autofocus>
+
+            <input
+
+                type="password"
+
+                name="password"
+
+                placeholder="Contraseña"
+
+                class="form-control mb-4">
+
+            <button type="submit" class="btn btn-primary w-100">
+
+                Entrar
+
+            </button>
+
         </form>
+
     </div>
+
 </body>
 <div></div>
 </html>
