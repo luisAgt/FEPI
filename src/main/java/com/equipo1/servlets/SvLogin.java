@@ -4,6 +4,7 @@
  */
 package com.equipo1.servlets;
 
+import com.equipo1.entities.Professor;
 import com.equipo1.entities.Student;
 import com.equipo1.entities.Users;
 import com.equipo1.logic.Controller;
@@ -112,11 +113,16 @@ public class SvLogin extends HttpServlet {
                     break;
                 case "STUDENT":
                     Student student = controller.findStudentByBoleta(user.getUsername());
-                    
-                    session.setAttribute("student", student);
+                    if(student != null){
+                        session.setAttribute("student", student);
+                    }
                     response.sendRedirect("Student.jsp");
                     break;
                 case "PROFESSOR":
+                    Professor professor = controller.findProfessorById(user.getIdUser());
+                    if(professor != null){
+                        session.setAttribute("professor", professor);
+                    }
                     response.sendRedirect("Professor.jsp");
                     break;
                 case "EXECUTIVE":
@@ -132,8 +138,10 @@ public class SvLogin extends HttpServlet {
                     request.getParameter("error");
                     break;
             }
-       
+        System.out.println("[SvLogin] OK | username=" + user);
+
         }catch(Exception e){
+            System.out.println("[SvLogin] ERROR | " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect("Login.jsp?error=server");
             request.getParameter("error");

@@ -65,7 +65,7 @@ public class SvLogout extends HttpServlet {
         if(session != null){
             session.invalidate();
         }
-        
+        System.out.println("[SvLogout] OK | usuario cerró sesión");
         response.sendRedirect("Login.jsp?success=logout");
     }
 

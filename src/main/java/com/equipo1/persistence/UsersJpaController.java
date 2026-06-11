@@ -118,4 +118,21 @@ public class UsersJpaController {
             em.close();
         }
     }
+    
+    public void updateEmail(int idUser, String newEmail) throws Exception {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Users user = em.find(Users.class, idUser);
+            if (user == null) throw new Exception("Usuario no encontrado");
+            user.setEmail(newEmail);
+            em.getTransaction().commit();
+            System.out.println("[UsersJPA] Email actualizado: idUser=" + idUser);
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

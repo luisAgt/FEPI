@@ -4,28 +4,27 @@
  */
 package com.equipo1.servlets;
 
+import com.equipo1.entities.Professor;
+import com.equipo1.entities.Schedule;
 import com.equipo1.logic.Controller;
-import com.equipo1.entities.LabMaterial;
-import com.equipo1.entities.Student;
-import java.time.LocalDate;
-import java.time.LocalDateTime;// <-- FALTA ESTA
 import java.io.IOException;
-import java.io.PrintWriter;                      // <-- FALTA ESTA
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvLoanMaterial", urlPatterns = {"/SvLoanMaterial"})
-public class SvLoanMaterial extends HttpServlet {
+@WebServlet(name = "SvSubjectsP", urlPatterns = {"/SvSubjectsP"})
+public class SvSubjectsP extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,7 +34,6 @@ public class SvLoanMaterial extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Controller controller = new Controller();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,10 +42,10 @@ public class SvLoanMaterial extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvLoanMaterial</title>");
+            out.println("<title>Servlet SvSubjectsP</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvLoanMaterial at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SvSubjectsP at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,14 +63,29 @@ public class SvLoanMaterial extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        
-        
-        List<LabMaterial> materials = controller.getAvailableMaterials();
-        System.out.println("Materiales: " + materials.size());
-        request.setAttribute("materials", materials);        
-        request.getRequestDispatcher("/LoanMaterial.jsp").forward(request, response);
+        try {
+            HttpSession session = request.getSession();
+            Professor professor = (Professor) session.getAttribute("professor");
+
+            if (professor == null) {
+                response.sendRedirect("Login.jsp");
+                return;
+            }
+
+            List<Schedule> schedules = controller.findSchedulesByProfessor(professor);
+
+            System.out.println("[SvSubjectsP] OK | idProfessor=" 
+                + professor.getIdProfessor() + " materias=" + schedules.size());
+
+            request.setAttribute("schedules", schedules);
+            request.getRequestDispatcher("SubjectsP.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            System.out.println("[SvSubjectsP] ERROR | " + e.getMessage());
+            request.setAttribute("mensaje", e.getMessage());
+            request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("SubjectsP.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -86,44 +99,7 @@ public class SvLoanMaterial extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        try {
-            // 1. Recibir boleta y buscar estudiante
-            String boleta = request.getParameter("boleta");
-            Student student = controller.findStudentByBoleta(boleta);
-            if (student == null) {
-                throw new Exception("No existe alumno con boleta: " + boleta);
-            }
-            int idUser = student.getUsers().getIdUser();
-
-            int idMaterial = Integer.parseInt(request.getParameter("id_lab_material"));
-            String status = request.getParameter("status");
-
-            // 2. Fechas
-            LocalDateTime loanDate = LocalDateTime.now();
-            String returnDateStr = request.getParameter("return_date");
-            LocalDate returnDate = LocalDate.parse(returnDateStr);
-
-            // 3. Registrar préstamo
-            controller.createLoanMaterial(idMaterial, idUser, loanDate, returnDate, status);
-
-            System.out.println("[SvLoanMaterial] OK | boleta=" + boleta 
-                + " idMaterial=" + idMaterial + " status=" + status);
-
-            request.setAttribute("mensaje", "Préstamo registrado correctamente");
-            request.setAttribute("tipoMensaje", "success");
-            request.getRequestDispatcher("LoanBook.jsp").forward(request, response);
-
-response.sendRedirect("LoanMaterial.jsp?status=success");
-            
-        } catch (Exception e) {
-            // Si tu Controller lanza error (ej. "Stock insuficiente" o "Usuario no encontrado")
-             System.out.println("[SvLoanMaterial] ERROR | " + e.getMessage());
-            e.printStackTrace();
-            request.setAttribute("mensaje", e.getMessage());
-            request.setAttribute("tipoMensaje", "error");
-            request.getRequestDispatcher("LoanMaterial.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

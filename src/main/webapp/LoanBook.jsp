@@ -17,9 +17,9 @@
 </head>
 <body>
     <form action="SvLoanBook" method="POST" class="form">
-    <input type="text" name="id_user" id="id_user" placeholder="ESCANEA TU CREDENCIAL" required><br><br>
-    <input type="text" placeholder="Nombre Completo" readonly id="nombre_usuario"><br><br>
-    
+    <input type="text" name="boleta" id="boleta" placeholder="ESCANEA TU CREDENCIAL" required><br><br>
+    <input type="text" placeholder="Nombre Completo" readonly id="fullname" name ="fullname"><br><br>
+    <input type="text" placeholder="Correo electronico" readonly id="email" name ="email"><br><br>
     <input type="text" name="status" placeholder="Estatus" value="Activo" required><br><br>
     
     <label>Fecha de devolución:</label>

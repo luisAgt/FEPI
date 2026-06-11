@@ -116,18 +116,19 @@ public class SvRegister extends HttpServlet {
             request.setAttribute("status", student.getStatus());
             request.setAttribute("birthdate", user.getBirthdate());
             
-            request.getRequestDispatcher("Register.jsp").forward(request, response);
+            System.out.println("[SvRegister] OK | boleta=" + data.getBoleta() + " carrer=" + data.getCarrer());
+
+            request.setAttribute("mensaje", "Registro realizado correctamente");
+            request.setAttribute("tipoMensaje", "success");
+            request.getRequestDispatcher("LoanBook.jsp").forward(request, response);
+
+
         }catch(Exception e){            
-            System.out.println("El error es:");
-            System.out.println("=== ERROR DETALLADO ===");
-            System.out.println("Mensaje: " + e.getMessage());
+            System.out.println("[SvRegister] ERROR | " + e.getMessage());
             e.printStackTrace();
-            System.out.println("Causa raíz: " + e.getCause());
-            System.out.println("======================");
-            request.setAttribute("error", "No se pudo procesar: " + e.getMessage()); // muestra el msg real
+            request.setAttribute("mensaje", e.getMessage());
+            request.setAttribute("tipoMensaje", "error");
             request.getRequestDispatcher("Register.jsp").forward(request, response);
-            
-            
         }
     }
 

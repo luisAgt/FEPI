@@ -13,6 +13,7 @@ import com.equipo1.entities.Horary;
 import com.equipo1.entities.LabMaterial;
 import com.equipo1.entities.LoanBook;
 import com.equipo1.entities.LoanMaterial;
+import com.equipo1.entities.Professor;
 import com.equipo1.entities.Schedule;
 import com.equipo1.entities.Student;
 import com.equipo1.entities.Subject;
@@ -31,6 +32,7 @@ public class PersistenceController {
     
     UsersJpaController userJPA = new UsersJpaController();
     StudentJpaController studentJPA = new StudentJpaController();
+    ProfessorJpaController profeJPA = new ProfessorJpaController();
     
     BookJpaController bookJPA = new BookJpaController();
     LoanBookJpaController loanBJPA = new LoanBookJpaController();
@@ -105,7 +107,9 @@ public class PersistenceController {
     public void createLoanBook(LoanBook loan) throws Exception{
         loanBJPA.create(loan);
     }
-    
+    public void createMaterial(LabMaterial material) throws Exception {
+        materialJPA.create(material);
+    }
     /**
      * @param book
      * @throws java.lang.Exception 
@@ -159,7 +163,13 @@ public class PersistenceController {
     public Users createUser(Users user) throws Exception {
         return         userJPA.create(user);
     }
-
+    public void editUser(Users user) throws Exception {
+        userJPA.edit(user);
+    }
+    // Método para insertar el libro en la base de datos
+    public void createBook(Book book) throws Exception {
+        bookJPA.create(book);
+    }
     public void createStudent(Student student) throws Exception {
         studentJPA.create(student);
     }
@@ -226,9 +236,21 @@ public class PersistenceController {
 
     public List<Enrollment> findEnrollmentByStudent(Integer idStudent) {
         return enrollJPA.findEnrollmentByStudent(idStudent);
-    }
+}
 
     public List<Attendance> findAttendanceByStudent(Student student) {
         return attenJPA.findAttendanceByStudent(student);
+    }
+
+    public List<Schedule> findScheduleByProfessor(Professor professor) {
+        return scheduleJPA.findSchedulesByProfessor(professor);
+    }
+
+    public void updateEmail(Integer idUser, String newEmail) throws Exception{
+        userJPA.updateEmail(idUser, newEmail);
+    }
+
+    public Professor findProfessorById(Integer idUser) {
+        return profeJPA.findProfessor(idUser);
     }
 }

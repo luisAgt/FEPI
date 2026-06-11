@@ -112,16 +112,18 @@ public class SvSchoolAccess extends HttpServlet {
             request.setAttribute("date_a",    checkDate);
             request.setAttribute("birthdate", user.getBirthdate());
             request.setAttribute("gate",      gate);
-
+            System.out.println("[SvSchoolAccess] OK | boleta=" + boleta + " access=" + access);
+            request.setAttribute("mensaje", "Acceso registrado correctamente");
+            request.setAttribute("tipoMensaje", "success");
             request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
         }catch(Exception e){
             e.printStackTrace();
             
-            request.setAttribute("error", "No se pudo procesar");
-            
+             System.out.println("[SvSchoolAccess] ERROR | " + e.getMessage());
+            e.printStackTrace();            
+            request.setAttribute("mensaje", e.getMessage());
+            request.setAttribute("tipoMensaje", "error");
             request.getRequestDispatcher("SchoolAccess.jsp").forward(request, response);
-            
-            
         }
     }
 

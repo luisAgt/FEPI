@@ -9,17 +9,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="css/style.css">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <form method="POST" action="SvAttendance">
-            <input type="text" name="boleta" placeholder="Escanea tu boleta para verificar asistencias" autofocus autocomplete="off"
-                              onkeydown="if(event.key==='Enter'){ document.getElementById('formAttendance').submit(); }">
-            <br><br>
-            
-        </form>
-        
-        
+        <div class="login-container">
+            <form method="POST" action="SvAttendance">
+                
+                <h1 class =" logo-tittle">ACCESCOM</h1>
+                <h2 class =" logo-tittle">Registro de asistencias</h2>
+                
+                <input type="text" name="boleta" placeholder="Escanea tu boleta para verificar asistencias" autofocus autocomplete="off"
+                                      onkeydown="if(event.key==='Enter'){ document.getElementById('formAttendance').submit(); }">            
+             </form>
+        </div>
     </body>
 </html>

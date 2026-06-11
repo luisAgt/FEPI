@@ -16,35 +16,26 @@
     <title>LABORATORIO</title>
 </head>
 <body>
-    <form action="SvLoanMaterial" method="POST">
-        <div>
-            <input type="text" name="id_user" id="qrInput" placeholder="ESCANEA TU BOLETA" autofocus><br><br>
-            <input type="text"  placeholder="Nombre Completo" readonly ><br><br>
-            <input type="text" placeholder="Boleta" readonly  id="qrInput"><br><br>
-        </div>
-        <div>
-            <input type="text" name="status" placeholder="Estatus" ><br><br>
-            <input type="text" name="date_loan" placeholder="Fecha de emision" readonly><br><br>
-            <input type="date" name="date_return" placeholder="Fecha de devolución"><br><br>
-            <select name = "id_material" class="form-select">
-               <%
-                     List<LabMaterial> materials = (List<LabMaterial>) request.getAttribute("materials");
-                    if(materials != null ){
-                    for (LabMaterial m : materials){
-                        System.out.println(m.getMaterialName());
-                %>
-                <option value="<%= m.getIdLabMaterial()%>">
-                    <%= m.getMaterialName() %>
-                </option>
-                <% 
-                        }
-                    }
-                %>
-            </select>
-        </div>
-        <div>
-            <input type ="submit" value="Enviar">
-        </div>
+    <form action="SvLoanMaterial" method="POST" class="form">
+        <input type="text" name="boleta" id="boleta" placeholder="ESCANEA TU CREDENCIAL" required><br><br>
+        <input type="text" placeholder="Nombre Completo" readonly id="fullname" name="fullname"><br><br>
+        <input type="text" placeholder="Correo electronico" readonly id="email" name="email"><br><br>
+        <input type="text" name="status" placeholder="Estatus" value="Activo" required><br><br>
+
+        <label>Fecha de devolución:</label>
+        <input type="date" name="return_date" placeholder="Fecha de devolución"><br><br>
+
+        <select name="id_lab_material" class="form-select">
+            <%
+                List<LabMaterial> materials = (List<LabMaterial>) request.getAttribute("materials");
+                if (materials != null) {
+                    for (LabMaterial m : materials) {
+            %>
+            <option value="<%= m.getIdLabMaterial()%>"><%= m.getMaterialName()%></option>
+            <%  } } %>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Enviar Préstamo</button>
     </form>
 </body>
 </html>

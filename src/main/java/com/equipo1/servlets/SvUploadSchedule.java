@@ -237,8 +237,12 @@ public class SvUploadSchedule extends HttpServlet {
                 }
             }
         }
-        
-        response.sendRedirect("SvSubjects");
+        System.out.println("[SvUploadSchedule] OK | boleta=" + boleta + " materias procesadas=" + blocks.size());
+        request.setAttribute("mensaje", "Horario registrado correctamente");
+        request.setAttribute("tipoMensaje", "success");
+        request.getRequestDispatcher("SvSubjects.jsp").forward(request, response);
+
+
 //       List<Enrollment> enrolls = controller.findEnrollmentByStudent(student.getIdStudent());
 //       
 //       request.setAttribute("enrollments", enrolls);
@@ -246,9 +250,11 @@ public class SvUploadSchedule extends HttpServlet {
 //        request.getRequestDispatcher("Subjects.jsp").forward(request, response);
 
     } catch (Exception e) {
+         System.out.println("[SvUploadSchedule] ERROR | " + e.getMessage());
         e.printStackTrace();
-        request.setAttribute("error", e.getMessage());
-        request.getRequestDispatcher("Subjects.jsp").forward(request, response);
+        request.setAttribute("mensaje", e.getMessage());
+        request.setAttribute("tipoMensaje", "error");
+        request.getRequestDispatcher("SvSubjects.jsp").forward(request, response);
     }
 }
 

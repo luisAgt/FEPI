@@ -38,7 +38,7 @@
 
     <div class="admin-header">
         <h1>Portal del Estudiante</h1>
-        <h3>Bienvenid@, <%=user.getFullname()%></h3>
+        <h2>Bienvenid@, <%=user.getFullname()%></h2>
     </div>
 
     <div class="admin-menu">
@@ -51,7 +51,7 @@
             Ver asistencias
         </a>
 
-        <a href="url" class="admin-card">
+        <a href="SvUpdateEmail" class="admin-card">
             Modificar correo
         </a>
 

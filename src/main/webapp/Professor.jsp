@@ -54,15 +54,15 @@
 
     <div class="admin-menu">
 
-        <a href="url" class="admin-card">
+        <a href="SvSubjectsP" class="admin-card">
             Ver materias asignadas
         </a>
 
-        <a href="url" class="admin-card">
+        <a href="SvAttendanceP" class="admin-card">
             Ver asistencias
         </a>
 
-        <a href="url" class="admin-card">
+        <a href="SvUpdateEmail" class="admin-card">
             Modificar correo
         </a>
 

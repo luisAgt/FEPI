@@ -4,27 +4,26 @@
  */
 package com.equipo1.servlets;
 
-import com.equipo1.entities.Book;
 import com.equipo1.entities.Student;
+import com.equipo1.entities.Users;
 import com.equipo1.logic.Controller;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author XPxTBxLLX
  */
-@WebServlet(name = "SvLoanBook", urlPatterns = {"/SvLoanBook"})
-public class SvLoanBook extends HttpServlet {
+@WebServlet(name = "SvUpdateEmail", urlPatterns = {"/SvUpdateEmail"})
+public class SvUpdateEmail extends HttpServlet {
 
+    Controller controller = new Controller();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,7 +33,6 @@ public class SvLoanBook extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Controller controller = new Controller();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -43,10 +41,10 @@ public class SvLoanBook extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvLoanBook</title>");
+            out.println("<title>Servlet SvUpdateEmail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvLoanBook at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SvUpdateEmail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,13 +62,7 @@ public class SvLoanBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
-        List<Book> books = controller.getAvailableBooks();
-        System.out.println("Libros: " + books.size());
-        request.setAttribute("books", books);
-        
-        request.getRequestDispatcher("/LoanBook.jsp").forward(request, response);
+                request.getRequestDispatcher("UpdateEmail.jsp").forward(request, response);
     }
 
     /**
@@ -81,51 +73,51 @@ public class SvLoanBook extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         try {
-            // 1. Recibir datos del JSP
-            String boleta = request.getParameter("boleta");
-            Student student = controller.findStudentByBoleta(boleta);
-            if(student == null){
-                throw new Exception ("No existe alumno con boleta:" + boleta);
+            HttpSession session = request.getSession();
+            Student student = (Student) session.getAttribute("student");
+
+            if (student == null) {
+                response.sendRedirect("Login.jsp");
+                return;
             }
-            int idUser = student.getUsers().getIdUser();
-            
-            int idBook = Integer.parseInt(request.getParameter("id_book"));
-            String status = request.getParameter("status");
-            
-            // 2. Convertir la fecha que viene del input type="date"
-            String returnDateStr = request.getParameter("return_date");
-            LocalDate returnDate = LocalDate.parse(returnDateStr); // Convierte "2026-06-15" a objeto Date
-            
-            // Fecha actual de préstamo
-            LocalDateTime loanDate = LocalDateTime.now();
-            
-            // 3. Llamar al controlador con los datos reales
-            
-            request.setAttribute("fullname", student.getUsers().getFullname());
-            request.setAttribute("return_date", returnDate);
-            request.setAttribute("email", student.getUsers().getEmail());
-            controller.createLoanBook(idBook, idUser, loanDate, returnDate, status);
-            
-            System.out.println("[SvLoanBook] OK - Préstamo registrado | boleta=" + boleta 
-                + " idBook=" + idBook + " status=" + status);
-            
-            request.setAttribute("mensaje", "Préstamo registrado correctamente");
+
+            String newEmail = request.getParameter("newEmail");
+            String password = request.getParameter("password");
+
+            // Verificar contraseña
+            Users user = student.getUsers();
+            if (!user.getPassword().equals(password)) {
+                request.setAttribute("mensaje", "Contraseña incorrecta.");
+                request.setAttribute("tipoMensaje", "error");
+                request.getRequestDispatcher("UpdateEmail.jsp").forward(request, response);
+                return;
+            }
+
+            // Actualizar correo
+            controller.updateEmail(user.getIdUser(), newEmail);
+
+            // Actualizar objeto en sesión
+            user.setEmail(newEmail);
+            session.setAttribute("student", student);
+
+            System.out.println("[SvUpdateEmail] OK | idUser=" + user.getIdUser() + " newEmail=" + newEmail);
+
+            request.setAttribute("mensaje", "Correo actualizado correctamente.");
             request.setAttribute("tipoMensaje", "success");
-            request.getRequestDispatcher("LoanBook.jsp").forward(request, response);            
+            request.getRequestDispatcher("UpdateEmail.jsp").forward(request, response);
+
         } catch (Exception e) {
-             System.out.println("[SvLoanBook] ERROR | " + e.getMessage());
-            e.printStackTrace();
-            request.setAttribute("error", e.getMessage());
+            System.out.println("[SvUpdateEmail] ERROR | " + e.getMessage());
             request.setAttribute("mensaje", e.getMessage());
             request.setAttribute("tipoMensaje", "error");
-            request.getRequestDispatcher("LoanBook.jsp").forward(request, response);
+            request.getRequestDispatcher("UpdateEmail.jsp").forward(request, response);
         }
     }
+
     /**
      * Returns a short description of the servlet.
      *

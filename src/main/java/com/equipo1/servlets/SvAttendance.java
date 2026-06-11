@@ -164,15 +164,19 @@ public class SvAttendance extends HttpServlet {
             // ── 6. Registrar Attendance ───────────────────────────────────────
             controller.createAttendance(student, activeEnrollment,
                                         Timestamp.valueOf(now), status);
-            System.out.println("Asistencia registrada: " + boleta + " " + status);
+            System.out.println("[SvAttendance] OK | boleta=" + boleta + " status=" + status);
 
-            request.setAttribute("mensaje", "Asistencia registrada: " + status);
-            request.getRequestDispatcher("Attendance.jsp?success=success").forward(request, response);
+            request.setAttribute("mensaje", "Asistencia registrado correctamente");
+            request.setAttribute("tipoMensaje", "success");
+            request.getRequestDispatcher("Attendance.jsp").forward(request, response);
 
         } catch (Exception e) {
+             System.out.println("[SvAttendance] ERROR | " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("Attendance.jsp?status=error").forward(request, response);
+           request.setAttribute("mensaje", e.getMessage());
+            request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("Attendance.jsp").forward(request, response);
         }
     }
 

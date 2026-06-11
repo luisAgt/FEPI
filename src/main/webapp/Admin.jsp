@@ -5,12 +5,24 @@
 --%>
 
 <%
-    response.setHeader("Cache-Control", "no-cache, no store, multi-revalidate");
-    response.setHeader("Pragma", "no cache");
-    response.setDateHeader("Expires", 0);
-    
     String role =
         (String) session.getAttribute("role");
+
+    if(role == null || !role.equals("ADMIN")){
+
+        response.sendRedirect("Login.jsp");
+
+        return;
+    }
+%>
+
+<%
+    response.setHeader("Cache-Control",
+            "no-cache, no-store, must-revalidate");
+
+    response.setHeader("Pragma", "no-cache");
+
+    response.setDateHeader("Expires", 0);
 
     if(role == null || !role.equals("ADMIN")){
 
@@ -35,14 +47,15 @@
     </head>
     <body>
         <h1><---------A D M I N I S T R A C I O N---------></h1>
-        <h2>Bienvenid@, <%=user.getFullname()%></h2>
-        <a href="url"> Registrar usuario</a> <br><br>
-        <a href="url"> Modificar usuario</a> <br><br>
-        <a href="url"> Registrar libro</a> <br><br>
-        <a href="url"> Modificar libro</a> <br><br>
-        <a href="url"> Registrar material de laboratorio</a> <br><br>
-        <a href="url"> Modificar material de laboratorio</a> <br><br>
+        <h2>Bienvenid@, <%=user.getFullname() %></h2>
+        <a href="RegisterUser.jsp" class="btn btn-primary mb-2">Registrar usuario</a> <br>
+        <a href="EditUser.jsp" class="btn btn-secondary mb-2">Modificar usuario</a> <br>
         
+        <a href="RegisterBook.jsp" class="btn btn-primary mb-2">Registrar libro</a> <br>
+        <a href="EditBook.jsp" class="btn btn-secondary mb-2">Modificar libro</a> <br>
+        
+        <a href="RegisterMaterial.jsp" class="btn btn-primary mb-2">Registrar material de laboratorio</a> <br>
+        <a href="EditMaterial.jsp" class="btn btn-secondary mb-2">Modificar material de laboratorio</a> <br>        
         <a href="SvLogout">Cerrar session</a>
     </body>
 </html>
