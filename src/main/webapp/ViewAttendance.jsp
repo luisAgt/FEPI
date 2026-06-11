@@ -10,10 +10,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <title>Mis Asistencias</title>
 </head>
 <body>
-    <h2>Mis Asistencias</h2>
+    <div class="admin-header">
+        <h1>Mis Asistencias</h1>
+    </div>
 
     <c:if test="${not empty error}">
         <p style="color:red;">${error}</p>
@@ -24,7 +28,7 @@
             <p>No hay asistencias registradas.</p>
         </c:when>
         <c:otherwise>
-            <table border="1" cellpadding="6">
+            <table class="table table-striped table-hover custom-table">
                 <tr>
                     <th>Fecha</th>
                     <th>Materia</th>
@@ -44,6 +48,10 @@
         </c:otherwise>
     </c:choose>
 
-    <br><a href="index.jsp">Volver</a>
+    <div class="text-center mt-4">
+        <a href="index.jsp" class="btn btn-secondary">
+            Volver
+        </a>
+    </div>
 </body>
 </html>

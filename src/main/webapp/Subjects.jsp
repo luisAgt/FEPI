@@ -20,28 +20,46 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div class="container mt-4">
+        <div class="admin-header">
+            <h1>Materias Inscritas</h1>
+        </div>
         <%
             if(enrolls == null || enrolls.isEmpty()){
             
         %>
-        <h2>Subir Comprobante de horario</h2>
-        <form action="SvUploadSchedule" method="POST" enctype="multipart/form-data">
-            <input type="file" name ="schedulePDF" accept=".pdf">
-            <button type="submit">Subir</button>
-        </form>
+        <div class="upload-card">
+
+            <h2>Subir Comprobante de Horario</h2>
+
+            <form action="SvUploadSchedule" method="POST" enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    name="schedulePDF"
+                    accept=".pdf"
+                    class="form-control mb-3">
+
+                <button type="submit" class="btn btn-primary">
+                    Subir PDF
+                </button>
+
+            </form>
+
+        </div>
         
         <%
             } else{
         %>      
         
         <h2>Materias inscritas</h2>
-        
-        <table border ="1">
+        <table class="table table-striped table-hover custom-table">
             <tr>
                 <th>Materia</th>
                 <th>Grupo</th>
@@ -88,5 +106,6 @@
         <%
             }
         %>
+        </div>
     </body>
 </html>

@@ -177,3 +177,34 @@
 
     text-align:center;
 }
+
+/* =========================
+   TABLAS
+========================= */
+
+.custom-table{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.custom-table thead,
+.custom-table th{
+    background:#1e3a8a;
+    color:white;
+}
+
+.upload-card{
+    max-width:600px;
+    margin:30px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.upload-card h2{
+    margin-bottom:20px;
+    color:#1e3a8a;
+}
