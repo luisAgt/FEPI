@@ -76,6 +76,23 @@ public class Controller {
         // Asegúrate de que "usersJpa" sea el nombre de tu variable UsersJpaController
         return persistence.findUser(idUser); 
     }
+    
+    // Método para crear usuarios desde el panel de Administrador
+    public void createUser(int idUser, String fullname, java.sql.Date birthdate, String email, String username, String password, String role) throws Exception {
+        
+        Users newUser = new Users();
+        
+        newUser.setIdUser(idUser);
+        newUser.setFullname(fullname); 
+        newUser.setBirthdate(birthdate);
+        newUser.setEmail(email);
+        newUser.setUsername(username);
+        newUser.setPassword(password);
+        newUser.setRole(role);
+        
+        // Llamada a la capa de persistencia para hacer el INSERT real
+        persistence.createUser(newUser);
+    }
 
     // Método para buscar el material de laboratorio
     public LabMaterial findLabMaterial(int idMaterial) {
@@ -112,7 +129,68 @@ public class Controller {
         persistence.editMaterial(material);
         persistence.createLoanMaterial(loan);
     }
-
+    // Método para editar usuarios desde el panel de Administrador
+    public void editUser(int idUser, String fullname, java.sql.Date birthdate, String email, String username, String password, String role) throws Exception {
+        
+        // 1. Buscamos al usuario existente en la BD
+        Users user = persistence.findUser(idUser);
+        
+        if (user != null) {
+            // 2. Le actualizamos todos sus datos
+            user.setFullname(fullname); 
+            user.setBirthdate(birthdate);
+            user.setEmail(email);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole(role);
+            
+            // 3. Le decimos a JPA que guarde los cambios (MERGE)
+            persistence.editUser(user);
+        } else {
+            throw new Exception("El usuario a editar no existe.");
+        }
+    }
+    
+    // Método para crear un nuevo libro
+    public void createBook(String tittle, String editorial, int edition, String author, int stock, String status) throws Exception {
+        
+        Book newBook = new Book();
+        
+        // No seteamos el idBook porque es autoincremental
+        newBook.setTittle(tittle);
+        newBook.setEditorial(editorial);
+        newBook.setEdition(edition);
+        newBook.setAuthor(author);
+        newBook.setStock(stock);
+        newBook.setStatus(status);
+        
+        persistence.createBook(newBook);
+    }
+    // Método para modificar los datos de un libro existente
+    public void editBook(int idBook, String tittle, String editorial, int edition, String author, int stock, String status) throws Exception {
+        
+        // 1. Buscar el libro original
+        Book book = persistence.findBook(idBook);
+        
+        if (book != null) {
+            // 2. Modificar sus atributos
+            book.setTittle(tittle);
+            book.setEditorial(editorial);
+            book.setEdition(edition);
+            book.setAuthor(author);
+            book.setStock(stock);
+            book.setStatus(status);
+            
+            // 3. Guardar los cambios mediante el método edit que ya tienes en tu persistencia
+            persistence.editBook(book);
+        } else {
+            throw new Exception("El libro especificado no existe.");
+        }
+    }
+    // Método para buscar un libro por su ID
+    public Book findBook(int idBook) {
+        return persistence.findBook(idBook);
+    }
     public List<LabMaterial> getAvailableMaterials() {
     return persistence.getAvailableMaterials();
 }    
@@ -255,7 +333,27 @@ public class Controller {
         
         persistence.createEnrollment(enroll);
     }
+    public void createMaterial(String name, int stock) throws Exception {
+        LabMaterial mat = new LabMaterial();
+        mat.setMaterialName(name); // Verifica si en tu entidad es setName o setDescription
+        mat.setStock(stock);
 
+        persistence.createMaterial(mat);
+    }   
+    
+
+    // Modificar un material existente
+    public void editMaterial(int idMaterial, String name, int stock) throws Exception {
+        LabMaterial mat = persistence.findMaterial(idMaterial);
+        if (mat != null) {
+            mat.setMaterialName(name);
+            mat.setStock(stock);
+            
+            persistence.editMaterial(mat); // editMaterial ya existe en tu PersistenceController
+        } else {
+            throw new Exception("El material no existe.");
+        }
+    }
     public Subject findSubjectByCode(String code) {
         return persistence.finSubjectByCode(code);
     }

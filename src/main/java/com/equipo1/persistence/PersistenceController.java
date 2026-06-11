@@ -105,7 +105,9 @@ public class PersistenceController {
     public void createLoanBook(LoanBook loan) throws Exception{
         loanBJPA.create(loan);
     }
-    
+    public void createMaterial(LabMaterial material) throws Exception {
+        materialJPA.create(material);
+    }
     /**
      * @param book
      * @throws java.lang.Exception 
@@ -159,7 +161,13 @@ public class PersistenceController {
     public Users createUser(Users user) throws Exception {
         return         userJPA.create(user);
     }
-
+    public void editUser(Users user) throws Exception {
+        userJPA.edit(user);
+    }
+    // Método para insertar el libro en la base de datos
+    public void createBook(Book book) throws Exception {
+        bookJPA.create(book);
+    }
     public void createStudent(Student student) throws Exception {
         studentJPA.create(student);
     }
